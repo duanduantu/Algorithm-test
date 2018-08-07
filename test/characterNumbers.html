@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>计算字符个数</title>
+</head>
+<body>
+<h1>题目描述</h1>
+<p>写出一个程序，接受一个由字母和数字组成的字符串，和一个字符，然后输出输入字符串中含有该字符的个数。不区分大小写。</p>
+<h3>输入描述:</h3>
+<p>输入一个有字母和数字以及空格组成的字符串，和一个字符。如：ABCDEF A</p>
+<h3>输出描述:</h3>
+<p>输出输入字符串中含有该字符的个数。如：1</p>
+<script>
+    var str = readline();//读取输入
+    var rex = readline();
+    function test(str,rex){
+        var newStr=str.toLowerCase();
+        var newX=rex.toLowerCase();
+        var num=0;
+        for(var i=0;i<newStr.length;i++){
+            if(newStr[i]==newX){
+                num++;
+            }
+        }
+        print(num);
+    }
+    test(str,rex);
+</script>
+</body>
+</html>
