@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>进制转换</title>
+</head>
+<body>
+<h1>题目描述</h1>
+<p>写出一个程序，接受一个十六进制的数值字符串，输出该数值的十进制字符串。（多组同时输入 ）。</p>
+<h3>输入描述:</h3>
+<p>输入一个十六进制的数值字符串。如：0xA</p>
+<h3>输出描述:</h3>
+<p>输出该数值的十进制字符串。如：10</p>
+<script>
+//    我写的
+    var str=readline();
+    while(str!=null){
+        var str1=str.slice(2).split('');
+        var newStr=0;
+        for(var i=0;i<str1.length;i++){
+            var n=str1[i];
+            switch(n)
+            {
+                case 'A':
+                    newStr+=10*Math.pow(16,str1.length-i-1);
+                    break;
+                case 'B':
+                    newStr+=11*Math.pow(16,str1.length-i-1);
+                    break;
+                case 'C':
+                    newStr+=12*Math.pow(16,str1.length-i-1);
+                    break;
+                case 'D':
+                    newStr+=13*Math.pow(16,str1.length-i-1);
+                    break;
+                case 'E':
+                    newStr+=14*Math.pow(16,str1.length-i-1);
+                    break;
+                case 'F':
+                    newStr+=15*Math.pow(16,str1.length-i-1);
+                    break;
+                default:
+                    newStr+=n*Math.pow(16,str1.length-i-1);
+            }
+        }
+    print(newStr);
+    str=readline();
+    }
+
+//    别人写的,哈哈哈，不过我发现parseInt()第二个参数可以不传，parseInt会判断开头的'0x'
+    while(line = readline()){
+        console.log(parseInt(line,16));
+    }
+</script>
+</body>
+</html>
