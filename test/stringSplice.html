@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>字符串分隔</title>
+</head>
+<body>
+<h1>题目描述</h1>
+<p>•连续输入字符串，请按长度为8拆分每个字符串后输出到新的字符串数组；
+    •长度不是8整数倍的字符串请在后面补数字0，空字符串不处理。</p>
+<h3>输入描述:</h3>
+<p>连续输入字符串(输入2次,每个字符串长度小于100)。如：abc
+    123456789</p>
+<h3>输出描述:</h3>
+<p>输出到长度为8的新字符串数组。如：abc00000
+    12345678
+    90000000</p>
+<script>
+    //自己写的没问题，机试时由于空格或者换行有点问题；
+    function test2(str){
+        if(str==''){
+            console.log(str);
+        }else if(str.length%8==0){
+            for(var i=0;i<str.length;i++){
+                console.log(str.slice(8*i,8+8*i))
+            }
+        }else{
+            var n=Math.floor(str.length/8);
+            if(n!=0){
+                for(var i=0;i<n;i++){
+                    console.log(str.slice(8*i,8+8*i))
+                }
+            }
+            var m=str.slice(8*n,8+8*n)
+            while(m.length%8!=0){
+                m+='0';
+            }
+            console.log(m);
+        }
+
+    }
+    test2('abc');
+    test2('123456789');
+
+    //参考下别人的代码
+    var cin1=readline()
+    var cin2=readline();
+    var long1=cin1.length%8;
+    if(long1!=0){
+        for(let i=0;i<8-long1;i++){
+            cin1+='0'
+        }
+    }
+    var long2=cin2.length%8;
+    if(long2!=0){
+        for(let i=0;i<8-long2;i++){
+            cin2+='0'
+        }
+    }
+    for(let i=0;i<cin1.length;i+=8){
+        console.log(cin1.substring(i,i+8))
+    }
+    for(let i=0;i<cin2.length;i+=8){
+        console.log(cin2.substring(i,i+8))
+    }
+</script>
+</body>
+</html>
