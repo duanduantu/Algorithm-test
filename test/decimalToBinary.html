@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>求int型正整数在内存中存储时1的个数</title>
+</head>
+<body>
+<h1>题目描述</h1>
+<p>输入一个int型的正整数，计算出该int型数据在内存中存储时1的个数。</p>
+<h3>输入描述:</h3>
+<p>输入一个整数（int类型）。如：5</p>
+<h3>输出描述:</h3>
+<p>这个数转换成2进制后，输出1的个数。如：2</p>
+<script>
+    //Number转二进制字符串也可以用toString(2);
+    while(n=readline()){
+        var sum=0;
+        while(n!=0){
+            if(n%2==1){
+                sum++;
+            }
+            n=parseInt(n/2);
+        }
+        console.log(sum);
+    }
+</script>
+</body>
+</html>
