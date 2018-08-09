@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>句子逆序</title>
+</head>
+<body>
+<h1>题目描述</h1>
+<p>将一个英文语句以单词为单位逆序排放。例如“I am a boy”，逆序排放后为“boy a am I”
+    所有单词之间用一个空格隔开，语句中除了英文字母外，不再包含其他字符。</p>
+<h3>输入描述:</h3>
+<p>将一个英文语句以单词为单位逆序排放。如：I am a boy</p>
+<h3>输出描述:</h3>
+<p>得到逆序的句子。如：boy a am I</p>
+<script>
+    while(line=readline()){
+        var arr=line.split(' ');
+        arr=arr.reverse();
+        var str=arr.join(' ');
+        console.log(str);
+    }
+</script>
+</body>
+</html>
