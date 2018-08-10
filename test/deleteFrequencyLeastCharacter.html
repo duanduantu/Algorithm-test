@@ -36,6 +36,7 @@
         for(var i=0;i<line.length;i++){
             var reg = new RegExp(arr[i],"g");
             var temp=newstr.replace(reg,"");
+            //var temp=newstr.replace(arr[i],"");直接替换字符串也可以
             newstr=temp;
         }
         console.log(newstr);
