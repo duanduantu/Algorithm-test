@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>删除字符串中出现次数最少的字符</title>
+</head>
+<body>
+<h1>题目描述</h1>
+<p>实现删除字符串中出现次数最少的字符，若多个字符出现次数一样，则都删除。输出删除这些单词后的字符串，字符串中其它字符保持原来的顺序。 </p>
+<h3>输入描述:</h3>
+<p>字符串只包含小写英文字母, 不考虑非法输入，输入的字符串长度小于等于20个字节。如：abcdd</p>
+<h3>输出描述:</h3>
+<p>删除字符串中出现次数最少的字符后的字符串。如：dd</p>
+<script>
+    while(line=readline()){
+        var obj={};
+        for(var i=0;i<line.length;i++){
+            if(line[i] in obj){
+                obj[line[i]]++;
+            }else{
+                obj[line[i]]=1;
+            }
+        }
+        var min=line.length;
+        var arr=[];
+        for(var key in obj){
+            if(obj[key]<min){
+                min=obj[key];
+                arr=[];
+                arr.push(key);
+            }else if(obj[key]==min){
+                arr.push(key);
+            }
+        }
+        var newstr=line;
+        for(var i=0;i<line.length;i++){
+            var reg = new RegExp(arr[i],"g");
+            var temp=newstr.replace(reg,"");
+            newstr=temp;
+        }
+        console.log(newstr);
+    }
+</script>
+</body>
+</html>
