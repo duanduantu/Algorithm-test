@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title id="title">{{ title }}</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="/static/skin/public.css">
+    <script src="/static/script/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@beta/lib/index.css">
+    <link rel="stylesheet" href="/static/skin/6.0/commonTemplate.css">
+    <!-- 引入组件 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vant@beta/lib/vant.min.js"></script>
+    <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=755f50dd346685ae1d0d2dc184178a01"></script>
+    <!--<script type="text/javascript" src="https://cache.amap.com/lbs/static/addToolbar.js"></script>-->
+    <style>
+        html,body {
+            background-color: #f7f7f7;
+            font-size:50px;
+        }
+
+        .select-position-header-div {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: white;
+            margin-bottom: 0.2rem;
+        }
+
+        .select-position-header-city-div {
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+            height: 100%;
+        }
+
+        .select-position-header-city-name-span {
+            font-size: 0.32rem;
+            color: #252525;
+            margin-left: 0.3rem;
+        }
+
+        .select-position-header-city-arrow-img {
+            width: 0.24rem;
+            height: 0.16rem;
+            margin-right: 0.21rem;
+            margin-left: 0.2rem;
+        }
+
+        .select-position-header-search-div {
+            display: flex;
+            align-items: center;
+            flex-grow: 1;
+            height: 100%;
+        }
+
+        .select-position-header-search-se-div {
+            width: 1px;
+            height: 0.3rem;
+            flex-shrink: 0;
+            background-color: #dddddd;
+        }
+
+        .select-position-header-search-input {
+            border: none;
+            outline: none;
+            flex-grow: 1;
+            font-size: 0.32rem;
+            color: #252525;
+            height: 100%;
+            margin-left: 0.21rem;
+            margin-right: 0.21rem;
+        }
+
+        .select-position-header-cancel-span {
+            font-size: 0.32rem;
+            color: #909090;
+            padding: 0.45rem 0.22rem 0.45rem 0.3rem;
+            flex-shrink: 0;
+        }
+
+        .select-position-cell-div {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: white;
+            margin-left: 0.2rem;
+            margin-right: 0.2rem;
+            overflow: hidden;
+        }
+
+        .select-position-cell-div:first-child {
+            border-top-left-radius: 0.16rem;
+            border-top-right-radius: 0.16rem;
+        }
+
+        .select-position-cell-img {
+            width: 0.18rem;
+            height: 0.24rem;
+            flex-shrink: 0;
+            padding: 0.5rem 0.22rem 0.5rem 0.4rem;
+        }
+
+        .select-position-cell-right-div {
+            flex-grow: 1;
+            border-bottom: 1px solid #f5f5f5;
+            padding: 0.27rem 0 0.26rem 0;
+        }
+
+        .select-position-cell-right-name-span {
+            font-size: 0.3rem;
+            color: #252525;
+            display: block;
+            margin-bottom: 0.1rem;
+        }
+
+        .select-position-cell-right-detail-span {
+            font-size: 0.24rem;
+            color: #909090;
+        }
+
+        .select-city-alert-div {
+            text-align: center;
+            max-height: 10.5rem;
+            padding-top: 0.35rem;
+            position: relative;
+            /*overflow: hidden;*/
+        }
+
+        .select-city-alert-title-span {
+            font-size: 0.36rem;
+            color: #252525;
+            display: block;
+            margin-bottom: 0.35rem;
+            position: sticky;
+            top: 0;
+            height: 30px;
+            line-height:30px;
+            background: #fff;
+        }
+
+        .select-city-alert-container-div {
+            overflow: auto;
+        }
+
+        .select-city-alert-group-div {
+            padding: 0.4rem 0.4rem;
+            text-align: left;
+            background-color: #f7f7f7;
+            color: #252525;
+        }
+
+        .select-city-alert-current-city-div {
+            display: flex;
+            align-items: center;
+            padding: 0.33rem 0.4rem;
+        }
+
+        .select-city-alert-current-img {
+            width: 0.26rem;
+            height: 0.34rem;
+        }
+
+        .select-city-alert-current-span {
+            font-size: 0.28rem;
+            color: #252525;
+            margin-left: 0.2rem;
+        }
+
+        .select-city-alert-province-div {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .select-city-alert-province-cell-div {
+            font-size: 0.3rem;
+            color: #252525;
+            width: 25%;
+            flex-shrink: 0;
+            padding-top: 0.4rem;
+            padding-bottom: 0.4rem;
+        }
+
+        .select-city-alert-close-img {
+            position: absolute;
+            width: 0.44rem;
+            height: 0.44rem;
+            top: 0.3rem;
+            right: 0.3rem;
+        }
+
+        .select-city-alert-container-city-div {
+
+        }
+
+        .select-city-alert-container-city-cell-div {
+            font-size: 0.28rem;
+            color: #252525;
+            text-align: left;
+            padding: 0.42rem 0.5rem;
+        }
+
+        .select-city-alert-back-div {
+            position: absolute;
+            top: 0.37rem;
+            left: 0.4rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .select-city-alert-back-img {
+            width: 0.14rem;
+            height: 0.22rem;
+        }
+
+        .select-city-alert-back-span {
+            font-size: 0.32rem;
+            color: #252525;
+            margin-left: 0.2rem;
+        }
+
+    </style>
+</head>
+<body>
+<div id="select-position-div">
+    <div class="select-position-header-div">
+        <div class="select-position-header-city-div" @click="clickCity">
+            <span class="select-position-header-city-name-span">{{ city }}</span>
+            <img src="/static/images/6.0/shouye_genghuan_icon.png" class="select-position-header-city-arrow-img"/>
+        </div>
+        <div class="select-position-header-search-div">
+            <div class="select-position-header-search-se-div"></div>
+            <input autofocus="autofocus" class="select-position-header-search-input" type="text" :placeholder="placeholder" v-model="keywords">
+            <div class="select-position-header-search-se-div"></div>
+        </div>
+        <span class="select-position-header-cancel-span" @click="clickCancel">取消</span>
+    </div>
+    <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
+        <van-list
+                v-model="loading"
+                :finished="finished"
+                finished-text="没有更多了"
+                @load="onLoad"
+                :offset="offset"
+                id="list"
+        >
+            <div class="select-position-cell-div" v-for="(item,index) in list" :key="index" :style="item.style" @click="clickCell(index)">
+                <img src="/static/images/6.2/didian_shibie_icon.png" class="select-position-cell-img"/>
+                <div class="select-position-cell-right-div">
+                    <span class="select-position-cell-right-name-span">{{ item.name }}</span>
+                    <span class="select-position-cell-right-detail-span">{{ item.address }}</span>
+                </div>
+            </div>
+        </van-list>
+    </van-pull-refresh>
+    <van-popup
+            v-model="isShowCityAlert"
+            round
+            :close-on-click-overlay="noClick"
+            position="bottom"
+    >
+        <div class="select-city-alert-div">
+            <div class="select-city-alert-title-span">选择城市</div>
+            <div class="select-city-alert-container-div" v-if="isProvince">
+                <div class="select-city-alert-group-div">当前所在省市</div>
+                <div class="select-city-alert-current-city-div">
+                    <img src="/static/images/6.0/shouye_weizhi_icon.png" class="select-city-alert-current-img"/>
+                    <span class="select-city-alert-current-span">{{ province }}</span>
+                    <span class="select-city-alert-current-span">{{ city }}</span>
+                </div>
+                <div class="select-city-alert-group-div">A&nbsp;B&nbsp;C&nbsp;F&nbsp;G</div>
+                <div class="select-city-alert-province-div">
+                    <div class="select-city-alert-province-cell-div" v-for="(item,index) in provinceList1" :key="index" @click="clickProvince(1,index)">
+                        {{ item.name }}
+                    </div>
+                </div>
+                <div class="select-city-alert-group-div">H&nbsp;J</div>
+                <div class="select-city-alert-province-div">
+                    <div class="select-city-alert-province-cell-div" v-for="(item,index) in provinceList2" :key="index" @click="clickProvince(2,index)">
+                        {{ item.name }}
+                    </div>
+                </div>
+                <div class="select-city-alert-group-div">L&nbsp;N&nbsp;Q&nbsp;S</div>
+                <div class="select-city-alert-province-div">
+                    <div class="select-city-alert-province-cell-div" v-for="(item,index) in provinceList3" :key="index" @click="clickProvince(3,index)">
+                        {{ item.name }}
+                    </div>
+                </div>
+                <div class="select-city-alert-group-div">T&nbsp;X&nbsp;Y&nbsp;Z</div>
+                <div class="select-city-alert-province-div">
+                    <div class="select-city-alert-province-cell-div" v-for="(item,index) in provinceList4" :key="index" @click="clickProvince(4,index)">
+                        {{ item.name }}
+                    </div>
+                </div>
+            </div>
+            <div class="select-city-alert-container-city-div" v-else>
+                <div class="select-city-alert-container-city-cell-div" v-for="(item,index) in cityList" :key="index" @click="clickCityCell(index)">
+                    {{ item.name }}
+                </div>
+            </div>
+            <div class="select-city-alert-back-div" v-show="!isProvince" @click="isProvince=!isProvince">
+                <img src="/static/images/6.2/fanhuishangyiji_icon.png" class="select-city-alert-back-img"/>
+                <span class="select-city-alert-back-span">上一级</span>
+            </div>
+            <img src="/static/images/6.0/guanbi_tanchuang_icon.png" class="select-city-alert-close-img" @click="clickClose"/>
+        </div>
+    </van-popup>
+</div>
+</body>
+</html>
+<script src="/static/script/6.0/connector.js"></script>
+<script src="/static/script/httpRequest.js"></script>
+<script src="/static/script/6.0/enumerate.js"></script>
+<script src="/static/script/accessData.js"></script>
+<script src="/static/script/public.js"></script>
+<script src="/static/script/6.0/router.js"></script>
+<script src="/static/script/6.0/commonTemplate.js"></script>
+<script src="/static/script/area.js"></script>
+<script>
+    // setTimeout(function(){
+    //     $('.select-position-header-search-input').focus()
+    // },500)
+    var Vue = window.Vue;
+    var vant = window.vant;
+    // 注册组件
+    Vue.use(vant);
+    var titleApp = new Vue({
+        el: '#title',
+        data: {
+            title: ''
+        }
+    });
+
+    var app = new Vue({
+        el: '#select-position-div',
+        data: {
+            type: 0,//0代表出发地址 1代表目的地址
+            way: 0,//0代表计算器的地址  1代表预约填写的地址
+            city: '成都市',
+            province: '四川省',
+            placeholder: '请输入出发地点',
+            currentPage: 1,
+            totalPage: 1,
+            isLoading: false,
+            finished: false,
+            offset: 100,
+            loading: false,
+            list: [],
+            keywords: '',
+            location: {
+                longitude: 0,
+                latitude: 0,
+                citycode: '',
+                city: '',
+                province: ''
+            },
+            noClick: false,
+            isShowCityAlert: false,
+            isProvince: true,
+            provinceList1: [
+                {
+                    name: '安徽',
+                    code: 340000
+                },
+                {
+                    name: '北京',
+                    code: 110000
+                },
+                {
+                    name: '重庆',
+                    code: 500000
+                },
+                {
+                    name: '福建',
+                    code: 350000
+                },
+                {
+                    name: '贵州',
+                    code: 520000
+                },
+                {
+                    name: '甘肃',
+                    code: 620000
+                },
+                {
+                    name: '广东',
+                    code: 440000
+                },
+                {
+                    name: '广西',
+                    code: 450000
+                }
+
+            ],
+            provinceList2: [
+                {
+                    name: '海南',
+                    code: 460000
+                },
+                {
+                    name: '河北',
+                    code: 130000
+                },
+                {
+                    name: '河南',
+                    code: 410000
+                },
+                {
+                    name: '黑龙江',
+                    code: 230000
+                },
+                {
+                    name: '湖北',
+                    code: 420000
+                },
+                {
+                    name: '湖南',
+                    code: 430000
+                },
+                {
+                    name: '吉林',
+                    code: 220000
+                },
+                {
+                    name: '江苏',
+                    code: 320000
+                },
+                {
+                    name: '江西',
+                    code: 360000
+                }
+            ],
+            provinceList3: [
+                {
+                    name: '辽宁',
+                    code: 210000
+                },
+                {
+                    name: '内蒙古',
+                    code: 150000
+                },
+                {
+                    name: '宁夏',
+                    code: 640000
+                },
+                {
+                    name: '青海',
+                    code: 630000
+                },
+                {
+                    name: '山西',
+                    code: 140000
+                },
+                {
+                    name: '山东',
+                    code: 370000
+                },
+                {
+                    name: '陕西',
+                    code: 610000
+                },
+                {
+                    name: '上海',
+                    code: 310000
+                },
+                {
+                    name: '四川',
+                    code: 510000
+                }
+            ],
+            provinceList4: [
+                {
+                    name: '天津',
+                    code: 120000
+                },
+                {
+                    name: '西藏',
+                    code: 540000
+                },
+                {
+                    name: '新疆',
+                    code: 650000
+                },
+                {
+                    name: '云南',
+                    code: 530000
+                },
+                {
+                    name: '浙江',
+                    code: 330000
+                }
+            ],
+            cityList: []
+        },
+        methods: {
+            onRefresh() {
+                app.currentPage = 1;
+                if (this.keywords === '') {
+                    this.requestNearby(true);
+                } else {
+                    this.requestSearch(true);
+                }
+            },
+            onLoad () {
+                if (this.keywords === '') {
+                    this.requestNearby(false);
+                } else {
+                    this.requestSearch(false);
+                }
+            },
+            clickCity: function () {
+                this.isShowCityAlert = true;
+            },
+            clickCancel: function () {
+                // history.back(-1);
+                window.parent.closeParentWindow();
+            },
+            clickCell: function (index) {
+                var item = this.list[index];
+                var value = {
+                    name: item.name,
+                    longitude: item.longitude,
+                    latitude: item.latitude
+                };
+                if (this.way === 0) {
+                    if (this.type === 0) {
+                        sessionStorage.setItem('startPos_calculator',JSON.stringify(value));
+                    } else {
+                        sessionStorage.setItem('endPos_calculator',JSON.stringify(value));
+                    }
+                } else {
+                    if (this.type === 0) {
+                        sessionStorage.setItem('startPos',JSON.stringify(value));
+                    } else {
+                        sessionStorage.setItem('endPos',JSON.stringify(value));
+                    }
+                }
+                // history.back(-1);
+                window.parent.closeParentWindow();
+            },
+            clickClose: function() {
+                this.isShowCityAlert = false;
+                this.isProvince = true;
+            },
+            clickProvince: function (listIndex,index) {
+                this.cityList = [];
+                var cityList = area.getAreaList().city_list;
+                switch (listIndex) {
+                    case 1: {
+                        var item = this.provinceList1[index];
+                        for (var key in cityList)  {
+                            if (parseInt(parseInt(key)/10000) === item.code/10000)  {
+                                var cityItem = {};
+                                cityItem.code = parseInt(key);
+                                cityItem.name = cityList[key];
+                                this.cityList.push(cityItem);
+                            }
+                        }
+                        break;
+                    }
+                    case 2: {
+                        var item = this.provinceList2[index];
+                        for (var key in cityList)  {
+                            if (parseInt(parseInt(key)/10000) === item.code/10000)  {
+                                var cityItem = {};
+                                cityItem.code = parseInt(key);
+                                cityItem.name = cityList[key];
+                                this.cityList.push(cityItem);
+                            }
+                        }
+                        break;
+                    }
+                    case 3: {
+                        var item = this.provinceList3[index];
+                        for (var key in cityList)  {
+                            if (parseInt(parseInt(key)/10000) === item.code/10000)  {
+                                var cityItem = {};
+                                cityItem.code = parseInt(key);
+                                cityItem.name = cityList[key];
+                                this.cityList.push(cityItem);
+                            }
+                        }
+                        break;
+                    }
+                    case 4: {
+                        var item = this.provinceList4[index];
+                        for (var key in cityList)  {
+                            if (parseInt(parseInt(key)/10000) === item.code/10000)  {
+                                var cityItem = {};
+                                cityItem.code = parseInt(key);
+                                cityItem.name = cityList[key];
+                                this.cityList.push(cityItem);
+                            }
+                        }
+                        break;
+                    }
+                }
+                this.isProvince = false;
+            },
+            clickCityCell: function (index) {
+                var item = this.cityList[index];
+
+            },
+            requestNearby: function (isClear) {
+                var loc = {};
+                loc = this.location;
+                var citycode = '028';
+                if (this.location.cityCode != '') {
+                    citycode = this.location.citycode;
+                }
+                var pageIndex = this.currentPage;
+                AMap.service(["AMap.PlaceSearch"], function() {
+                    //构造地点查询类
+                    var placeSearch = new AMap.PlaceSearch({
+                        // type: '餐饮服务', // 兴趣点类别
+                        pageSize: 20, // 单页显示结果条数
+                        pageIndex: pageIndex, // 页码
+                        city: citycode, // 兴趣点城市
+                        citylimit: true,  //是否强制限制在设置的城市内搜索
+                    });
+                    var cpoint = [104.0559, 30.66256];
+                    if (loc.longitude != 0) {
+                        cpoint = [loc.longitude, loc.latitude]; //中心点坐标
+                    }
+                    placeSearch.searchNearBy('', cpoint, 200, function(status, result) {
+                        if (isClear === true) {
+                            app.isLoading = false;
+                            app.list = [];
+                        }
+                        // 加载状态结束
+                        app.loading = false;
+                        if (status === 'complete') {
+                            app.totalPage = parseInt(result.poiList.count / result.poiList.pageSize + 1);
+                            app.finished = false;
+                            app.currentPage++;
+                            for (var i = 0;i < result.poiList.pois.length;i++) {
+                                var item = {};
+                                item.name = result.poiList.pois[i].name;
+                                item.address = result.poiList.pois[i].address;
+                                item.longitude = result.poiList.pois[i].location.lng;
+                                item.latitude = result.poiList.pois[i].location.lat;
+                                item.style = {};
+                                if (i === result.poiList.pois.length - 1) {
+                                    item.style = {
+                                        borderBottomLeftRadius: '0.16rem',
+                                        borderBottomRightRadius: '0.16rem'
+                                    }
+                                }
+                                app.list.push(item);
+                            }
+                        } else {
+                            app.finished = true;
+                        }
+
+
+                    });
+                });
+            },
+            requestSearch: function (isClear) {
+                var loc = {};
+                loc = this.location;
+                var citycode = '028';
+                if (this.location.cityCode != '') {
+                    citycode = this.location.citycode;
+                }
+                var pageIndex = this.currentPage;
+                var keywords = this.keywords;
+                AMap.service(["AMap.PlaceSearch"], function() {
+                    //构造地点查询类
+                    var placeSearch = new AMap.PlaceSearch({
+                        pageSize: 20, // 单页显示结果条数
+                        pageIndex: pageIndex, // 页码
+                        city: citycode, // 兴趣点城市
+                        citylimit: true  //是否强制限制在设置的城市内搜索
+                    });
+
+                    placeSearch.search(keywords, function(status, result) {
+                        if (isClear === true) {
+                            app.isLoading = false;
+                            app.list = [];
+                        }
+                        // 加载状态结束
+                        app.loading = false;
+                        if (status === 'complete') {
+                            app.totalPage = parseInt(result.poiList.count / result.poiList.pageSize + 1);
+                            app.finished = false;
+                            app.currentPage++;
+                            for (var i = 0;i < result.poiList.pois.length;i++) {
+                                var item = {};
+                                item.name = result.poiList.pois[i].name;
+                                item.address = result.poiList.pois[i].address;
+                                item.longitude = result.poiList.pois[i].location.lng;
+                                item.latitude = result.poiList.pois[i].location.lat;
+                                item.style = {};
+                                if (i === result.poiList.pois.length - 1) {
+                                    item.style = {
+                                        borderBottomLeftRadius: '0.16rem',
+                                        borderBottomRightRadius: '0.16rem'
+                                    }
+                                }
+                                app.list.push(item);
+                            }
+                        } else {
+                            app.finished = true;
+                        }
+                    });
+                });
+            }
+        },
+        watch: {
+            keywords: function () {
+                this.currentPage = 1;
+                if (this.keywords === '') {
+                    this.requestNearby(true);
+                } else {
+                    this.requestSearch(true);
+                }
+
+            }
+        },
+        mounted() {
+            if (accessData.getCookie(enumerateCache.location) != '') {
+                this.location = JSON.parse(accessData.getCookie(enumerateCache.location));
+                this.city = this.location.city;
+                this.province = this.location.province;
+            }
+            // if (accessData.getUrlQuery().type == 0) {
+            //     titleApp.title = '出发地点';
+            // } else {
+            //     titleApp.title = '目的地点';
+            // }
+        }
+    });
+    function passParam(param){
+        if (param.type == 0) {
+            titleApp.title = '出发地点';
+        } else {
+            titleApp.title = '目的地点';
+        }
+        app.type = param.type;
+        app.way = param.way;
+        console.log(param);
+    }
+    // testData();
+    function testData() {
+        titleApp.title = '出发地点';
+        // app.city = '';
+        // app.placeholder = '';
+        // app.list = [
+        //     {
+        //         name: '北门车站',
+        //         address: '四川省成都市武侯区玉林西街8号',
+        //         style: {}
+        //     },
+        //     {
+        //         name: '北门车站',
+        //         address: '四川省成都市武侯区玉林西街8号',
+        //         style:{
+        //             borderBottomLeftRadius: '0.16rem',
+        //             borderBottomRightRadius: '0.16rem'
+        //         }
+        //     }
+        // ];
+    }
+</script>

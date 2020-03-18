@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>全部评论</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="/static/skin/public.css">
+    <script src="/static/script/public.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@beta/lib/index.css">
+    <!-- 引入组件 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vant@beta/lib/vant.min.js"></script>
+    <style>
+        html{
+            font-size:50px;
+        }
+        body {
+            background-color: #f7f7f7;
+        }
+
+        .comment-main-div {
+            /*margin: 0.2rem;*/
+            /*background-color: #ffffff;*/
+            border-radius: 0.2rem;
+            margin-top: 0.2rem;
+            padding-bottom: 0.2rem;
+        }
+
+        .comment-cell-div {
+            font-size: 0;
+            /*margin-top: 0.4rem;*/
+            padding-top: 0.53rem;
+            padding-left: 0.4rem;
+            padding-right: 0.4rem;
+            background-color: #ffffff;
+            margin-left: 0.2rem;
+            margin-right: 0.2rem;
+            /*border-radius: 0.2rem;*/
+        }
+
+        .comment-cell-div:last-child {
+            border-bottom-left-radius: 0.2rem;
+            border-bottom-right-radius: 0.2rem;
+        }
+
+        .comment-cell-header-div {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 0.24rem;
+        }
+
+        .comment-cell-headIcon-img {
+            flex-shrink: 0;
+        }
+
+        .comment-cell-nickname-span {
+            font-size: 0.26rem;
+            color: #252525;
+            flex-grow: 1;
+            margin-left: 0.19rem;
+        }
+
+        .comment-cell-rate-span {
+            font-size: 0.26rem;
+            flex-shrink: 0;
+        }
+
+        .comment-cell-content-span {
+            display: block;
+            font-size: 0.26rem;
+            font-weight: normal;
+            font-stretch: normal;
+            line-height: 0.33rem;
+            letter-spacing: 0rem;
+            color: #252525;
+            padding-bottom: 0.23rem;
+        }
+
+        .comment-cell-imgs-div {
+            padding-bottom: 0.32rem;
+        }
+
+        .comment-cell-img-div {
+            display: flex;
+            align-items: center;
+            flex-wrap: nowrap;
+        }
+
+        .comment-cell-imgs-contanier-div {
+            width: 33%;
+            position: relative;
+            padding-top: 32%;
+            border-radius: 0.1rem;
+            overflow: hidden;
+        }
+
+        .comment-cell-imgs {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .comment-cell-hospital-div {
+            display: flex;
+            align-items: center;
+            padding-bottom: 0.32rem;
+        }
+
+        .comment-cell-hospital-img {
+            width: 0.26rem;
+            height: 0.24rem;
+            margin-right: 0.1rem;
+        }
+
+        .comment-cell-hospital-span {
+            font-size: 0.22rem;
+            color: #909090;
+        }
+
+        .comment-cell-underline-div {
+            height: 0.02rem;
+            background-color: #f5f5f5;
+            /*margin-left: 0.4rem;*/
+            width: 100%;
+        }
+
+        .comment-list-header-div {
+            display: flex;
+            align-items: center;
+            background-color: white;
+            padding-left: 0.4rem;
+            padding-top: 0.5rem;
+            margin-left: 0.2rem;
+            margin-right: 0.2rem;
+            border-top-left-radius: 0.2rem;
+            border-top-right-radius: 0.2rem;
+
+        }
+
+
+        .comment-list-header-all-div {
+            border-radius: 0.24rem;
+            border: solid 0.02rem #dddddd;
+            font-size: 0.24rem;
+            color: #252525;
+            text-align: center;
+            padding: 0.11rem 0.22rem;
+            margin-left: 0.25rem;
+        }
+
+        .comment-list-header-all-div:first-child {
+            margin-left: 0;
+        }
+
+        .van-image-preview__image {
+            width: 100%!important;
+        }
+    </style>
+</head>
+<body>
+<div id="comment-list-div" v-cloak>
+    <div class="comment-main-div">
+        <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
+            <van-list
+                    v-model="loading"
+                    :finished="finished"
+                    finished-text="没有更多了"
+                    @load="onLoad"
+                    :offset="offset"
+                    id="list"
+            >
+                <div class="comment-list-header-div">
+                    <div class="comment-list-header-all-div" :style="commentFilterStyle[0]" @click="clickFilter(0)">
+                        全部 {{ commentCount.all }}
+                    </div>
+                    <div class="comment-list-header-all-div" :style="commentFilterStyle[1]" @click="clickFilter(1)">
+                        好评 {{ commentCount.good }}
+                    </div>
+                    <div class="comment-list-header-all-div" :style="commentFilterStyle[2]" @click="clickFilter(2)">
+                        一般 {{ commentCount.normal }}
+                    </div>
+                    <div class="comment-list-header-all-div" :style="commentFilterStyle[3]" @click="clickFilter(3)">
+                        差劲 {{ commentCount.bad }}
+                    </div>
+                </div>
+                <div class="comment-cell-div" v-for="(item,index) in commentList" :key="index">
+                    <div class="comment-cell-header-div">
+                        <div style="font-size: 0"><van-image :src="item.headIcon" width="0.6rem" height="0.6rem" round fit="cover" class="comment-cell-headIcon-img"/></div>
+                        <span class="comment-cell-nickname-span">{{ item.nickname }}</span>
+                        <span class="comment-cell-rate-span" :style="item.rateStyle">{{ item.commentRateDes }}</span>
+                    </div>
+                    <span class="comment-cell-content-span">{{ item.commentContent }}</span>
+                    <div class="comment-cell-imgs-div" v-if="item.imgs.length > 0">
+                        <div class="comment-cell-img-div">
+                            <div v-for="(item1,index) in item.imgs" :key="index" :style="item1.imgStyle" class="comment-cell-imgs-contanier-div">
+                                <!--<van-image :src="item.img" width="100%" fit="cover"/>-->
+                                <img :src="item1.img" class="comment-cell-imgs" @click="clickImage(index,item.imgs)"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="comment-cell-hospital-div">
+                        <img src="/static/images/6.0/taocanxiangqing_dizhi_icon.png" class="comment-cell-hospital-img"/>
+                        <span class="comment-cell-hospital-span">{{ item.hospital }}</span>
+                    </div>
+                    <div class="comment-cell-underline-div"></div>
+                </div>
+            </van-list>
+        </van-pull-refresh>
+    </div>
+</div>
+</body>
+</html>
+<script>
+    var Vue = window.Vue;
+    var vant = window.vant;
+    // 注册组件
+    Vue.use(vant);
+    var app = new Vue({
+        el: '#comment-list-div',
+        data: {
+            currentPage: 1,
+            totalPage: 1,
+            isLoading: false,
+            finished: false,
+            offset: 0,
+            loading: false,
+            commentList: [],
+            commentCount: {
+                all: 0,
+                good: 0,
+                normal: 0,
+                bad: 0
+            },
+            currentSelectIndex: 0,
+            commentFilterStyle:[
+                {
+                    border: 'solid 0.02rem #00c188',
+                    color: '#00c188'
+                },
+                {
+                    border: 'solid 0.02rem #dddddd',
+                    color: '#252525'
+                },
+                {
+                    border: 'solid 0.02rem #dddddd',
+                    color: '#252525'
+                },
+                {
+                    border: 'solid 0.02rem #dddddd',
+                    color: '#252525'
+                }
+            ]
+        },
+        methods: {
+            onRefresh() {
+                setTimeout(function () {
+                    app.isLoading = false;
+                    app.currentPage = 1;
+                    testData();
+                },500);
+            },
+            onLoad () {
+                // 异步更新数据
+                setTimeout(function () {
+                    testData();
+                    // 加载状态结束
+                    app.loading = false;
+                    // 数据全部加载完成
+                    if (app.currentPage >= app.totalPage) {
+                        app.finished = true
+                    }else {
+                        app.currentPage++;
+                    }
+                    console.log('加载更多')
+                },500);
+            },
+            clickFilter: function (index) {
+                this.currentSelectIndex = index;
+            },
+            clickImage: function (index,imgs) {
+                var preImages = [];
+                for (var i = 0; i < imgs.length;i ++) {
+                    preImages.push(imgs[i].img);
+                }
+
+                vant.ImagePreview({
+                    images: preImages,
+                    startPosition: index
+                });
+            }
+        },
+        watch: {
+            currentSelectIndex: function () {
+                switch (this.currentSelectIndex) {
+                    case 0: {
+                        this.commentFilterStyle = [
+                            {
+                                border: 'solid 0.02rem #00c188',
+                                color: '#00c188'
+                            },
+                            {
+                                border: 'solid 0.02rem #dddddd',
+                                color: '#252525'
+                            },
+                            {
+                                border: 'solid 0.02rem #dddddd',
+                                color: '#252525'
+                            },
+                            {
+                                border: 'solid 0.02rem #dddddd',
+                                color: '#252525'
+                            }
+                        ];
+                        break;
+                    }
+                    case 1: {
+                        this.commentFilterStyle = [
+                            {
+                                border: 'solid 0.02rem #dddddd',
+                                color: '#252525'
+                            },
+                            {
+                                border: 'solid 0.02rem #00c188',
+                                color: '#00c188'
+                            },
+                            {
+                                border: 'solid 0.02rem #dddddd',
+                                color: '#252525'
+                            },
+                            {
+                                border: 'solid 0.02rem #dddddd',
+                                color: '#252525'
+                            }
+                        ];
+                        break;
+                    }
+                    case 2: {
+                        this.commentFilterStyle = [
+                            {
+                                border: 'solid 0.02rem #dddddd',
+                                color: '#252525'
+                            },
+                            {
+                                border: 'solid 0.02rem #dddddd',
+                                color: '#252525'
+                            },
+                            {
+                                border: 'solid 0.02rem #00c188',
+                                color: '#00c188'
+                            },
+                            {
+                                border: 'solid 0.02rem #dddddd',
+                                color: '#252525'
+                            }
+                        ];
+                        break;
+                    }
+                    case 3: {
+                        this.commentFilterStyle = [
+                            {
+                                border: 'solid 0.02rem #dddddd',
+                                color: '#252525'
+                            },
+                            {
+                                border: 'solid 0.02rem #dddddd',
+                                color: '#252525'
+                            },
+                            {
+                                border: 'solid 0.02rem #dddddd',
+                                color: '#252525'
+                            },
+                            {
+                                border: 'solid 0.02rem #00c188',
+                                color: '#00c188'
+                            }
+                        ];
+                        break;
+                    }
+                }
+            }
+        }
+    });
+    // testData();
+    function testData() {
+        app.commentCount = {
+            all: 3333,
+            good: 2323,
+            normal: 23,
+            bad: 2
+        };
+
+        app.commentList = [
+            {
+                commentId: '123',
+                mealId: '32424',
+                headIcon: 'http://yihubang-image.oss-cn-shenzhen.aliyuncs.com/2019-07-12/e714a5a88388481c923ba1de45023863_anli1.png',
+                nickname: '张三',
+                commentRateDes: '好评!',
+                commentRate: '0',// 0 好评 1 一般 2 差评
+                rateStyle: {
+                    color: '#00c188'
+                },
+                commentContent: '护工张姐真的很不错，服务态度很好。护工张姐真的很护工张姐真的很不错，服务态度很好。护工张姐真的很护工张姐真的很不错，服务态度很好。护工张姐真的很护工张姐真的很不错，服务态度很好。护工张姐真的很',
+                imgs: [
+                    {
+                        img: 'http://yihubang-image.oss-cn-shenzhen.aliyuncs.com/2019-07-12/ec892a6b1a2e4521abc12f49ae30c3a2_quantian_1.png',
+                        imgStyle: {
+                            marginRight: '0.15rem',
+                            // height: height
+                        }
+                    },
+                    {
+                        img: 'http://yihubang-image.oss-cn-shenzhen.aliyuncs.com/2019-07-12/ec892a6b1a2e4521abc12f49ae30c3a2_quantian_1.png',
+                        imgStyle: {
+                            marginRight: '0.15rem',
+                            // height: height
+                        }
+                    },
+                    {
+                        img: 'http://yihubang-image.oss-cn-shenzhen.aliyuncs.com/2019-07-12/ec892a6b1a2e4521abc12f49ae30c3a2_quantian_1.png',
+                        imgStyle: {
+                            // height: height
+                        }
+                    }
+
+                ],
+                hospital: '四川大学华西医院'
+            },
+            {
+                commentId: '123',
+                mealId: '32424',
+                headIcon: 'http://yihubang-image.oss-cn-shenzhen.aliyuncs.com/2019-07-12/e714a5a88388481c923ba1de45023863_anli1.png',
+                nickname: '李四',
+                commentRateDes: '一般!',
+                commentRate: '1',// 0 好评 1 一般 2 差评
+                rateStyle: {
+                    color: '#252525'
+                },
+                commentContent: '护工张姐真的很不错，服务态度很好。护工张姐真的很护工张姐真的很不错，服务态度很好。护工张姐真的很护工张姐真的很不错，服务态度很好。护工张姐真的很护工张姐真的很不错，服务态度很好。护工张姐真的很',
+                imgs: [
+                    {
+                        img: 'http://yihubang-image.oss-cn-shenzhen.aliyuncs.com/2019-07-12/ec892a6b1a2e4521abc12f49ae30c3a2_quantian_1.png',
+                        imgStyle: {
+                            marginRight: '0.15rem',
+                            // height: height
+                        }
+                    },
+                    {
+                        img: 'http://img1.imgtn.bdimg.com/it/u=3818249532,1558495751&fm=26&gp=0.jpg',
+                        imgStyle: {
+                        }
+                    }
+                ],
+                hospital: '四川大学华西医院'
+            },
+            {
+                commentId: '123',
+                mealId: '32424',
+                headIcon: 'http://yihubang-image.oss-cn-shenzhen.aliyuncs.com/2019-07-12/e714a5a88388481c923ba1de45023863_anli1.png',
+                nickname: '王麻子',
+                commentRateDes: '差劲!',
+                commentRate: '2',// 0 好评 1 一般 2 差评
+                rateStyle: {
+                    color: '#909090'
+                },
+                commentContent: '护工张姐真的很不错，服务态度很好好。护工张姐真的很护工张姐真的很不错，服务态度很好。护工张姐真的很',
+                imgs: [
+                ],
+                hospital: '四川大学华西医院'
+            },
+            {
+                commentId: '123',
+                mealId: '32424',
+                headIcon: 'http://yihubang-image.oss-cn-shenzhen.aliyuncs.com/2019-07-12/e714a5a88388481c923ba1de45023863_anli1.png',
+                nickname: '王麻子',
+                commentRateDes: '差劲!',
+                commentRate: '2',// 0 好评 1 一般 2 差评
+                rateStyle: {
+                    color: '#909090'
+                },
+                commentContent: '护工张姐真的很不错，服务态度很好好。护工张姐真的很护工张姐真的很不错，服务态度很好。护工张姐真的很',
+                imgs: [
+                ],
+                hospital: '四川大学华西医院'
+            },
+            {
+                commentId: '123',
+                mealId: '32424',
+                headIcon: 'http://yihubang-image.oss-cn-shenzhen.aliyuncs.com/2019-07-12/e714a5a88388481c923ba1de45023863_anli1.png',
+                nickname: '王麻子',
+                commentRateDes: '差劲!',
+                commentRate: '2',// 0 好评 1 一般 2 差评
+                rateStyle: {
+                    color: '#909090'
+                },
+                commentContent: '护工张姐真的很不错，服务态度很好好。护工张姐真的很护工张姐真的很不错，服务态度很好。护工张姐真的很',
+                imgs: [
+                ],
+                hospital: '四川大学华西医院'
+            }
+        ];
+    }
+</script>

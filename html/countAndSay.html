@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>countAndSay</title>
+</head>
+<body>
+
+</body>
+<script type="text/javascript">
+    /**
+     * @param {number} n
+     * @return {string}
+     */
+    var countAndSay = function(n) {
+        if(n === 1){
+            return n.toString()
+        }else{
+            var str = countAndSay(n-1);
+            var str1 = "";
+            var flag = 1
+            for(var i = 0; i < str.length; i++){
+                flag = 1
+                if(i !== str.length - 1){
+                    while(str[i] === str[i+1] && i !== str.length - 1){
+                        i++;
+                        flag+=1;
+                    }
+                }
+                str1 += (flag.toString() + str[i])
+            }
+            return str1
+        }
+    };
+
+    console.log(countAndSay(6))
+</script>
+</html>

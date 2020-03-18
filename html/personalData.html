@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>个人资料</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="/static/skin/public.css">
+    <script src="/static/script/public.js"></script>
+    <script src="/static/script/trimDate.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@beta/lib/index.css">
+    <!-- 引入组件 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vant@beta/lib/vant.min.js"></script>
+    <style>
+        html{
+            font-size:50px;
+        }
+        body {
+            background-color: #f7f7f7;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            /*background-color: white;*/
+        }
+
+        li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.4rem 0.3rem 0.4rem 0.3rem;
+            background-color: white;
+        }
+
+        .head-icon-li {
+            padding: 0.6rem 0.3rem 0.6rem 0.3rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .title-span {
+            font-size: 0.32rem;
+            color: #252525;
+            flex-grow: 1;
+        }
+
+        .head-icon-img {
+            width: 1.08rem;
+            height: 1.08rem;
+            flex-shrink: 0;
+            margin-right: 0.2rem;
+            overflow: hidden;
+            border-radius: 1.08rem;
+        }
+
+        .right-arrow-img {
+            width: 0.13rem;
+            height: 0.22rem;
+            flex-shrink: 0;
+        }
+
+        .nickname-input {
+            font-size: 0.32rem;
+            color: #909090;
+            text-align: right;
+            border: none;
+            outline: none;
+        }
+
+        .sex-radio-div {
+            font-size: 0.28rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .radio-img {
+            width: 0.28rem;
+            height: 0.28rem;
+            display: block;
+            margin-left: 0.2rem;
+            margin-right: 0.2rem;
+        }
+
+        .sex-span {
+            font-size: 0.28rem;
+            color: #252525;
+        }
+
+        .value-span {
+            font-size: 0.32rem;
+            color: #909090;
+            margin-right: 0.2rem;
+        }
+
+        .personal-footer-div {
+            background-color: #00c188;
+            border-radius: 0.42rem;
+            height: 0.84rem;
+            margin: 0.8rem 0.2rem 0.8rem 0.2rem;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .save-span {
+            font-size: 0.36rem;
+            /*font-weight: bold;*/
+            color: #ffffff;
+        }
+
+        .datetime-picker {
+
+        }
+
+    </style>
+</head>
+<body>
+<div id="personal-div" v-cloak>
+    <ul>
+        <li class="head-icon-li">
+            <span class="title-span">头像</span>
+            <img :src="headIcon" class="head-icon-img"/>
+            <img src="/static/images/6.0/heise_jinru_icon.png" class="right-arrow-img"/>
+        </li>
+        <li>
+            <span class="title-span">昵称</span>
+            <input type="text" placeholder="输入昵称" class="nickname-input" v-model="nickname">
+        </li>
+        <li>
+            <span class="title-span">性别</span>
+            <div class="sex-radio-div">
+                <img :src="manImg" class="radio-img" @click="clickSex(0)"/>
+                <span class="sex-span">男</span>
+                <img :src="womanImg" class="radio-img" @click="clickSex(1)"/>
+                <span class="sex-span">女</span>
+            </div>
+        </li>
+        <li>
+            <span class="title-span">生日</span>
+            <span class="value-span" @click="clickBirthday">{{ birthday }}</span>
+            <img src="/static/images/6.0/heise_jinru_icon.png" class="right-arrow-img"/>
+        </li>
+        <li>
+            <span class="title-span">城市</span>
+            <span class="value-span">{{ city }}</span>
+            <img src="/static/images/6.0/heise_jinru_icon.png" class="right-arrow-img"/>
+        </li>
+    </ul>
+    <div class="personal-footer-div" @click="clickSave">
+        <span class="save-span">保存</span>
+    </div>
+    <van-datetime-picker :min-date="minDate" v-model="currentDate" type="date" class="datetime-picker" v-show="isShowDatePicker" @cancel="closeDateTimerPicker" @confirm="finishDateTimer"/>
+</div>
+</body>
+</html>
+<script>
+    var Vue = window.Vue;
+    var vant = window.vant;
+    // 注册组件
+    Vue.use(vant);
+    var app = new Vue({
+        el: '#personal-div',
+        data: {
+            headIcon: '/static/images/6.0/wode_morentouxiang_icon.png',
+            nickname: '',
+            manImg: '/static/images/6.0/xuanzedian_xuanzhong_icon.png',
+            womanImg: '/static/images/6.0/xuanzedian_weixuanzhong_icon.png',
+            gender: 0,//0男 1女
+            birthday: '选择日期',
+            city: '选择城市',
+            currentDate: new Date(),
+            isShowDatePicker: false,//是否显示时间选择器
+            minDate:new Date(1900,0,1)
+        },
+        methods: {
+            clickSex: function (sex) {
+                this.gender = sex;
+            },
+            clickSave: function () {
+                console.log('点击保存');
+            },
+            clickBirthday: function () {
+                this.isShowDatePicker = true;
+            },
+            closeDateTimerPicker: function () {
+                this.isShowDatePicker = false;
+            },
+            finishDateTimer: function (value) {
+                console.log(value);
+                // console.log(value.getDate())
+            }
+        },
+        watch: {
+            gender: function () {
+                if (this.gender === 0) {
+                    this.manImg = '/static/images/6.0/xuanzedian_xuanzhong_icon.png';
+                    this.womanImg = '/static/images/6.0/xuanzedian_weixuanzhong_icon.png';
+                }else {
+                    this.manImg = '/static/images/6.0/xuanzedian_weixuanzhong_icon.png';
+                    this.womanImg = '/static/images/6.0/xuanzedian_xuanzhong_icon.png';
+                }
+            }
+        }
+    });
+
+    testData();
+    function testData() {
+        app.nickname = 'zjljlkkl';
+        // app.headIcon = 'http://yihubang-image.oss-cn-shenzhen.aliyuncs.com/2019-07-12/e714a5a88388481c923ba1de45023863_anli1.png';
+        // app.birthday = '1992-9-9'
+    }
+</script>

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>我要预约</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="/static/skin/public.css">
+    <script src="/static/script/public.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@beta/lib/index.css">
+    <!-- 引入组件 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vant@beta/lib/vant.min.js"></script>
+    <script src="/static/script/6.0/router.js"></script>
+
+    <style>
+        html{
+            font-size:50px;
+        }
+        body {
+            background-color: #f7f7f7;
+        }
+
+        .subscribe-header-div {
+            background-color: white;
+            height: 2.1rem;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            /*padding-top: 0.42rem;*/
+            font-size: 0;
+        }
+
+        .subscribe-header-content-div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 0;
+        }
+
+        .subscribe-header-img {
+            width: 0.8rem;
+            height: 0.8rem;
+            padding-bottom: 0.29rem;
+        }
+
+        .subscribe-header-content-span {
+            font-size: 0.26rem;
+            color: #909090;
+            display: block;
+        }
+
+        .selected {
+            color: #00c188;
+        }
+
+        .subscribe-header-progress-img {
+            width: 0.34rem;
+            height: 0.34rem;
+            /*padding-top: 0.23rem;*/
+            padding-bottom: 0.5rem;
+        }
+
+        .subscribe-meal-info-div {
+            background-color: white;
+            margin: 0.2rem 0.2rem 0 0.2rem;
+            border-radius: 0.16rem;
+            display: flex;
+            align-items: center;
+            padding: 0.2rem;
+        }
+
+        .subscribe-meal-cover-img {
+            width: 1.74rem;
+            height: 1.74rem;
+            border-radius: 0.06rem;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .subscribe-meal-detail-info-div {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            margin-left: 0.3rem;
+            /*align-items: center;*/
+        }
+
+        .subscribe-meal-name-span {
+            font-size: 0.28rem;
+            color: #252525;
+        }
+
+        .subscribe-meal-type-des-div {
+            font-size: 0;
+            margin-top: 0.22rem;
+            margin-bottom: 0.29rem;
+        }
+
+        .subscribe-meal-type-des-span {
+            font-size: 0.22rem;
+            color: #ffffff;
+            display: inline-block;
+            background-color: #00c188;
+            border-radius: 0.06rem;
+            padding: 0.08rem 0.12rem;
+        }
+
+        .subscribe-meal-price-span {
+            font-size: 0.32rem;
+            color: #fa3253;
+        }
+
+        .subscribe-meal-price-unit-span {
+            font-size: 0.22rem;
+            color: #fa3253;
+        }
+
+        .subscribe-custom-info-title-span{
+            font-size: 0.32rem;
+            color: #252525;
+            display: block;
+            padding: 0.35rem 0.21rem;
+        }
+
+        .subscribe-custom-info-div {
+            background-color: white;
+            border-radius: 0.16rem;
+            margin-left: 0.2rem;
+            margin-right: 0.2rem;
+        }
+
+        .subscribe-custom-info-cell-div {
+            display: flex;
+            align-items: center;
+        }
+
+
+        .subscribe-custom-info-cell-input {
+            flex-grow: 1;
+            border: none;
+            outline: none;
+            font-size: 0.28rem;
+            color: #252525;
+            margin: 0.4rem 0 0.4rem 0.29rem;
+        }
+
+        .sex-radio-div {
+            font-size: 0.28rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .radio-img {
+            width: 0.28rem;
+            height: 0.28rem;
+            display: block;
+            margin-left: 0.2rem;
+            margin-right: 0.2rem;
+        }
+
+        .sex-span {
+            font-size: 0.28rem;
+            color: #252525;
+        }
+
+
+        .next-step-div {
+            height: 1.1rem;
+            background-color: #ffffff;
+            border: solid 0.01rem #dddddd;
+            text-align: center;
+            margin-top: 0.2rem;
+        }
+        .next-step-span {
+            font-size: 0.36rem;
+            color: #ffffff;
+            padding: 0.25rem 0;
+            background-color: #00c188;
+            border-radius: 0.42rem;
+            margin: 0.13rem 0.3rem;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<div id="subscribe-div">
+    <div class="subscribe-header-div">
+        <div class="subscribe-header-content-div">
+            <img src="/static/images/6.0/yuyue_tianxieziliao_icon.png" class="subscribe-header-img"/>
+            <span class="subscribe-header-content-span selected">填写资料</span>
+        </div>
+        <img src="/static/images/6.0/dindan_jindu_icon.png" class="subscribe-header-progress-img"/>
+        <div class="subscribe-header-content-div">
+            <img src="/static/images/6.0/dindan_tijiaodindan1_icon.png" class="subscribe-header-img"/>
+            <span class="subscribe-header-content-span">提交订单</span>
+        </div>
+        <img src="/static/images/6.0/dindan_jindu_icon.png" class="subscribe-header-progress-img"/>
+        <div class="subscribe-header-content-div">
+            <img src="/static/images/6.0/dindan_fuwuwancheng_icon.png" class="subscribe-header-img"/>
+            <span class="subscribe-header-content-span">预约成功</span>
+        </div>
+    </div>
+    <div class="subscribe-meal-info-div">
+        <img :src="mealInfo.cover" class="subscribe-meal-cover-img"/>
+        <div class="subscribe-meal-detail-info-div">
+            <span class="subscribe-meal-name-span">{{ mealInfo.mealName }}</span>
+            <div class="subscribe-meal-type-des-div">
+                <span class="subscribe-meal-type-des-span">{{ mealInfo.typeDes }}</span>
+            </div>
+            <span class="subscribe-meal-price-span"><span class="subscribe-meal-price-unit-span">￥</span>{{ mealInfo.price }}</span>
+        </div>
+    </div>
+    <span class="subscribe-custom-info-title-span">填写客户资料（必填）</span>
+    <div class="subscribe-custom-info-div">
+        <div class="subscribe-custom-info-cell-div">
+            <input type="text" placeholder="客户姓名" class="subscribe-custom-info-cell-input" v-model="customInfo.name">
+            <div class="sex-radio-div">
+                <img :src="customInfo.manImg" class="radio-img" @click="clickSex(0)"/>
+                <span class="sex-span">男</span>
+                <img :src="customInfo.womanImg" class="radio-img" @click="clickSex(1)"/>
+                <span class="sex-span">女</span>
+            </div>
+        </div>
+    </div>
+    <div class="next-step-div">
+        <span class="next-step-span" @click="clickNextStep">下一步</span>
+    </div>
+</div>
+</body>
+</html>
+<script>
+    var Vue = window.Vue;
+    var vant = window.vant;
+    // 注册组件
+    Vue.use(vant);
+    var app = new Vue({
+        el: '#subscribe-div',
+        data: {
+            mealInfo: {
+                mealId: '',
+                mealName: '',
+                cover: '',
+                typeDes: '',
+                type: 0,
+                price: ''
+            },
+            customInfo: {
+                name: '',
+                age: '',
+                sex: 0, //0男 1女
+                contactName:'',
+                tel:'',
+                manImg: 'taocanxiangqing_pingjiazhuangshi_icon.png',
+                womanImg: 'taocanxiangqing_pingjiazhuangshi_icon.png',
+            }
+        },
+        methods: {
+            clickNextStep: function () {
+                router.gotoCommitOrder();
+            },
+            clickSex: function (sex) {
+                this.customInfo.sex = sex;
+            }
+        },
+        watch: {
+            customInfo: {
+                handler(val,oldval){
+                    console.log(val.sex)
+                    if (this.customInfo.sex === 0) {
+                        this.customInfo.manImg = '/static/images/6.0/xuanzedian_xuanzhong_icon.png';
+                        this.customInfo.womanImg = '/static/images/6.0/xuanzedian_weixuanzhong_icon.png';
+                    }else {
+                        this.customInfo.manImg = '/static/images/6.0/xuanzedian_weixuanzhong_icon.png';
+                        this.customInfo.womanImg = '/static/images/6.0/xuanzedian_xuanzhong_icon.png';
+                    }
+                },
+                deep:true//对象内部的属性监听，也叫深度监听
+            }
+        }
+    });
+
+    testData();
+    function testData() {
+        app.mealInfo = {
+            mealId: '1313',
+            mealName: '短期卧床康复患者',
+            cover: 'http://yihubang-image.oss-cn-shenzhen.aliyuncs.com/2019-07-12/e714a5a88388481c923ba1de45023863_anli1.png',
+            type: 0,
+            typeDes: '一对一专属照护',
+            price: '100/天'
+        }
+    }
+</script>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title></title>
+    <!--<script src="js/jquery-3.3.1.min.js"></script>-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@beta/lib/index.css">
+    <link rel="stylesheet" type="text/css" href="animate.css">
+    <!-- 引入组件 -->
+    <!--<script src="https://unpkg.com/axios/dist/axios.min.js"></script>-->
+    <!--<script src="https://cdn.bootcss.com/qs/6.5.2/qs.min.js"></script>-->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vant@beta/lib/vant.min.js"></script>
+    <style>
+        html{
+            background:#ddd;
+        }
+        .van-tabs__wrap{
+            background: #fff;
+        }
+        .van-tabs__nav--line{
+            width:70%;
+        }
+        .logo{
+            width: 16px;
+            height:16px;
+            display:inline-block;
+            background-image: url('./taocanxiangqing_pingjiazhuangshi_icon.png')
+        }
+        .logo::after{
+             content: '图标';
+             font-size: 0px;
+            display:inline-block;
+        }
+
+        /*@keyframes bounce-in {*/
+            /*0% {*/
+                /*transform:scale(0);*/
+            /*}*/
+            /*50% {*/
+                /*transform:scale(1.5);*/
+            /*}*/
+            /*100% {*/
+                /*transform:scale(1);*/
+            /*}*/
+        /*}*/
+        /*.fade-enter-active{*/
+            /*transform-origin: left center;*/
+            /*animation: bounce-in 1s;*/
+        /*}*/
+        /*.fade-leave-active{*/
+            /*transform-origin: left center;*/
+            /*animation: bounce-in 1s reverse;*/
+        /*}*/
+        /*.fade-enter,.fade-leave-to{*/
+            /*opacity:0;*/
+        /*}*/
+        /*.fade-enter-active,.fade-leave-active{*/
+            /*transition: opacity 1s;*/
+        /*}*/
+        /*动画显示时第一帧存在的类：fade-enter,fade-enter-active;
+          第二帧：fade-enter-to,fade-enter-active;
+          最后一帧：所有类都被移除*/
+        /*动画隐藏时第一帧存在的类：fade-leave,fade-leave-active;
+          第二帧：fade-leave-to,fade-leave-active;
+          最后一帧：所有类都被移除*/
+        </style>
+</head>
+<body>
+<div id="app">
+    <!--<van-tabs v-model="active">-->
+        <!--<van-tab title="标签 1">内容 1</van-tab>-->
+        <!--<van-tab title="标签 2">内容 2</van-tab>-->
+        <!--<van-tab title="标签 3">内容 2</van-tab>-->
+    <!--</van-tabs>-->
+    <van-pull-refresh style="height:300px;" v-model="isLoading" @refresh="onRefresh">
+        <p>刷新次数: {{ count }}</p>
+    </van-pull-refresh>
+    <!--<transition-->
+      <!--name="fade"-->
+      <!--enter-active-class="animated fadeInUp"-->
+      <!--leave-active-class="animated fadeOutDown"-->
+    <!--&gt;-->
+        <!--<div v-show="show" style="width:100%;position:fixed;bottom:0;background:#fff;">-->
+            <!--<ul>-->
+                <!--<li>1111111111111111</li>-->
+                <!--<li>1211111111111111</li>-->
+                <!--<li>1121111111111111</li>-->
+                <!--<li>1112111111111111</li>-->
+                <!--<li>1111111111111111</li>-->
+                <!--<li>1111111111111111</li>-->
+                <!--<li>1111111111111111</li>-->
+                <!--<li>1111111111111111</li>-->
+                <!--<li><img width="200" height="200" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1565259837792&di=06b19b6887656a9c00442fc36e433d8e&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201809%2F15%2F20180915172446_jqkxz.jpg"/></li>-->
+            <!--</ul>-->
+        <!--</div>-->
+    <!--</transition>-->
+    <!--<button @click="handleClick">切换</button>-->
+</div>
+</body>
+</html>
+<script>
+    var Vue = window.Vue;
+    var vant = window.vant;
+    // 注册组件
+    Vue.use(vant);
+    new Vue({
+        el: '#app',
+        data() {
+            return {
+                active:0,
+                show:false,
+                count: 0,
+                isLoading: false
+            }
+        },
+        methods: {
+            onRefresh() {
+                setTimeout(() => {
+                    this.$toast('刷新成功');
+                    this.isLoading = false;
+                    this.count++;
+                }, 500);
+            },
+            handleClick () {
+                this.show = !this.show
+            }
+        }
+    })
+    var json = '[{"kdgtId":62,"classId":139,"className":"www\"","kdgtName":"跨界分园2"},{"kdgtId":82,"classId":138,"className":"测试集团","kdgtName":"草堂亚洲湾幼儿园（温江校区）"},{"kdgtId":62,"classId":137,"className":"分园2大二班","kdgtName":"跨界分园2"},{"kdgtId":62,"classId":135,"className":"分园2大一班","kdgtName":"跨界分园2"},{"kdgtId":63,"classId":133,"className":"分园3太阳班","kdgtName":"跨界分园3"},{"kdgtId":63,"classId":131,"className":"分园3星星班","kdgtName":"跨界分园3"}]';
+    // json.replace("\"", "&quot;")
+    // var reg=new RegExp("\"", "g");
+    // var json1 = json.replace(/\\"/g,"\\\"")
+    // var json2 = json1.replace(/\\\"/g, "\"")
+    // console.log(JSON.parse(json))
+</script>

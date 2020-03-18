@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta charset="UTF-8" name="viewport" content="width=device-width,initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Title</title>
+    <!--<style type="text/css">-->
+        <!--*{-->
+            <!--margin: 0;-->
+            <!--padding: 0;-->
+        <!--}-->
+        <!--.parent{-->
+            <!--width: 300px;-->
+            <!--border: 10px solid pink;-->
+            <!--margin: 100px;-->
+        <!--}-->
+        <!--.son{-->
+            <!--width: 100px;-->
+            <!--height: 100px;-->
+            <!--background: red;-->
+            <!--margin:20px;-->
+        <!--}-->
+        <!--.son1{-->
+            <!--display:flow-root;-->
+        <!--}-->
+        <!--.child{-->
+            <!--width: 200px;-->
+            <!--height: 100px;-->
+            <!--background: blue;-->
+            <!--margin:20px;-->
+        <!--}-->
+    <!--</style>-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@beta/lib/index.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vant@beta/lib/vant.min.js"></script>
+</head>
+<body>
+<div id="app">
+    <van-tabs v-model="active">
+        <van-tab title="标签 1">内容 1</van-tab>
+        <van-tab title="标签 2">内容 2</van-tab>
+    </van-tabs>
+</div>
+
+<script>
+    var Vue = window.Vue;
+    var vant = window.vant;
+
+    // 注册组件
+    Vue.use(vant);
+    new Vue({
+        el:"#app",
+        data() {
+            return {
+                active:0
+            }
+        }
+        })
+
+</script>
+<!--<div class="parent">-->
+    <!--<div class="son"></div>-->
+    <!--<div class="son1"><div class="child">111</div></div>-->
+<!--</div>-->
+<!--<div style="position:relative;top:-293px;left:0;width:100%;"><div style="font-size: 13px;height:293px;background: rgba(0, 0, 0, 0.6);top: 0;left: 0;bottom: 0;right: 0;color: white;position: absolute;text-align: center;" class="">-->
+    <!--&lt;!&ndash;<div style="position: absolute;top:50%;left:50%;transform:translate(-50%,-50%); width: 100%;" class="">上传成功</div></div></div>&ndash;&gt;-->
+<!--<div style="width:100px;height:100px" tabindex="-1" id="test"></div>-->
+
+
+
+<!--<script type="text/javascript">-->
+    <!--// document.getElementById("#test").focus();-->
+    <!--var getProWeekList = (date) => {-->
+        <!--var dateTime = date.getTime(); // 获取现在的时间-->
+        <!--var dateDay = date.getDay();-->
+        <!--var oneDayTime = 24 * 60 * 60 * 1000;-->
+        <!--var proWeekList = [];-->
+
+        <!--for(var i = 0; i < 7; i++){-->
+            <!--var time = dateTime - (dateDay + ( 7 - 1 - i)) * oneDayTime;-->
+            <!--proWeekList[i] = format(new Date(time)); //date格式转换为yyyy-mm-dd格式的字符串-->
+        <!--}-->
+        <!--return proWeekList[0] + '-' + proWeekList[6] ;-->
+    <!--}-->
+    <!--function format(d){-->
+        <!--let year = d.getFullYear()-->
+        <!--let month = d.getMonth() + 1-->
+        <!--let date = d.getDate()-->
+        <!--return year + '/' + month + '/' + date-->
+    <!--}-->
+    <!--var date = new Date()-->
+    <!--console.log(getProWeekList(date))-->
+    <!--let arr = [1, [2, [3, [4, 5]]], 6];-->
+    <!--let str = JSON.stringify(arr);-->
+    <!--console.log(str)-->
+    <!--//第0种-->
+    <!--arr_flat = arr.flat(Infinity);-->
+    <!--console.log(arr_flat)-->
+<!--</script>-->
+
+
+</body>
+</html>

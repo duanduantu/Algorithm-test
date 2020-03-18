@@ -1,0 +1,46 @@
+{
+  "data": {
+    "code": "000",
+    "data": {
+      "school": "草堂国际私塾(成都)",
+      "teacher": "吴云云",
+      "subject": "数学老师",
+      "attendPercent": "60",
+      "attendDate": "2019年2月22日",
+      "shouldAttend": "14",
+      "attended": "13",
+      "sickLeave": 3,
+      "casualLeave": 0,
+      "notRecord": 10,
+      "achievementNumber": 368.09,
+      "achievementPercent": 12,
+      "resultSum": 6,
+      "read": 23.987,
+      "like": 3.456,
+      "repost": 5678,
+      "message": 600,
+      "influence": 23.56,
+      "images": [
+        {
+          "imgUrl": require('assets/img/bg_10.png'),
+          "classroom": "珊瑚班",
+          "days": "第六天",
+          "childname": "李珊珊",
+          "schoolname": "草堂国际私塾",
+        },{
+          "imgUrl": require('assets/img/bg_10.png'),
+          "classroom": "珊瑚班",
+          "days": "第六天",
+          "childname": "李珊珊",
+          "schoolname": "草堂国际私塾",
+        }],
+      "score": 4.7,
+      "feedback": 23,
+      "notFeedback": 5,
+      "satisfied": 19,
+      "toimprove": 19,
+      "notSatisfied": 0,
+      "reportWeek": "2019年2月2日-2月9日"
+    }
+  }
+}

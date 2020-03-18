@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <title>Title</title>
+    <style type="text/css">
+        #print{
+            margin-top:30px;
+            width:300px
+        }
+    </style>
+</head>
+<body>
+<!--<label>照相机</label>-->
+<!--<input type="file" id='image' accept="image/*" capture='camera' multiple>-->
+<!--<br>-->
+<!--<div id="print"></div>-->
+ <label>音频上传</label>
+ <input type="file" id="audio" accept="audio/*" style="margin-top:50px;"/>
+<!--<div id="print"></div>-->
+<audio id="print" controls="controls"></audio>
+<div id="type"></div>
+</body>
+<script type="text/javascript">
+    var file = document.querySelector('input');
+    if (getIos()) {
+        file.removeAttribute("capture");
+    }
+    function getIos() {
+        var ua=navigator.userAgent.toLowerCase();
+        if (ua.match(/iPhone\sOS/i) == "iphone os") {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    // var inputList = document.getElementById('image');
+    // inputList.addEventListener('change', function(){
+    //     var print = document.getElementById('print');
+    //     // print.innerHTML = inputList.value
+    //     var reader = new FileReader();
+    //     reader.readAsDataURL(inputList.files[0]);
+    //     reader.onload = function(e) {
+    //         var img = new Image();
+    //         img.width = "200";
+    //         img.height = "200";
+    //         img.src = this.result;
+    //         print.append(img);
+    //         // print.innerHTML = this.result
+    //         // console.log(this.result);
+    //     };
+    // })
+
+    var inputList2 = document.getElementById('audio');
+    inputList2.addEventListener('change', function(){
+        var print = document.getElementById('print');
+        // print.innerHTML = inputList2.value
+        var reader = new FileReader();
+        console.log(inputList2.files[0].type);
+        document.getElementById('type').innerHTML='文件类型：'+inputList2.files[0].type
+        reader.readAsDataURL(inputList2.files[0]);
+        reader.onload = function(e) {
+            // var img = new Image();
+            // img.width = "200";
+            // img.height = "200";
+            print.src = this.result;
+            // print.innerHTML = this.result
+            // console.log(this.result);
+        };
+    })
+
+</script>
+</html>

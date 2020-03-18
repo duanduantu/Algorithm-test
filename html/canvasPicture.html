@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="modal"></div>
+<!--<canvas width="400" height="400" id="myCanvas"></canvas>-->
+<script>
+    var m = document.getElementsByClassName("modal")[0]
+    m.innerHTML = '<canvas width="400" height="400" id="myCanvas"></canvas>'
+    var code = {
+        width: 300,
+        height: 300,
+        src: "code1.png"
+    }
+    var userInfo = {
+        name: "北京绿橙国际幼儿园"
+    }
+    var image1 = new Image();
+    image1.src = code.src;
+    var c = document.getElementById("myCanvas");
+    var ctx = c.getContext("2d");
+    image1.onload = function() {
+        ctx.drawImage(image1, 50, 20, code.width, code.height);
+        // ctx.save();
+        ctx.restore(); // 还原状态
+        ctx.font = "20px Georgia";
+        ctx.fillStyle = '#000';
+        ctx.textAlign = 'center';
+        ctx.fillText(userInfo.name, 200, 350);
+    }
+
+
+</script>
+</body>
+<script>
+    /*window.onload = function () {
+				var newModal = document.getElementById("newModal")
+				var mask = document.getElementById("mask");
+				var appid = document.getElementById("appid").getAttribute("value");
+				newModal.innerHTML = '<canvas width="400" height="400" id="myCanvas"></canvas>'
+				function draw (colid, kdgt_tab_id, appid, classname) {
+					var code = {
+						width: 300,
+						height: 300,
+						src: "enrollmentController.do?getQRCode&url=unStuInfoCheckController.do?qrParentRegister&classId="+colid+"&reKdgtId="+kdgt_tab_id+"&appid="+appid
+					}
+					var userInfo = {
+						name: classname
+					}
+					var image1 = new Image();
+					image1.src = code.src;
+					var c = document.getElementById("myCanvas");
+					var ctx = c.getContext("2d");
+					image1.onload = function() {
+						ctx.clearRect(0,0,400,400)
+						ctx.drawImage(image1, 50, 20, code.width, code.height);
+						ctx.restore(); // 还原状态
+						ctx.font = "20px Georgia";
+						ctx.fillStyle = '#000';
+						ctx.textAlign = 'center';
+						ctx.fillText(userInfo.name, 200, 330);
+					}
+				}
+
+				var classDetails = document.getElementsByClassName("classDetail2");
+				console.log(classDetails[0])
+				for (var i = 0; i < classDetails.length; i++){
+                    (function(x){
+                        classDetails[x].addEventListener("click", function(e){
+                            mask.style.display = "block";
+                            newModal.style.display = "block";
+                            var colid = e.target.getAttribute("colid");
+                            var kdgt_tab_id = e.target.getAttribute("kdgt_tab_id");
+                            var classname = e.target.getAttribute("classname");
+                            draw(colid, kdgt_tab_id, appid, classname);
+                        })
+                    })(i)
+				}
+				mask.addEventListener("click", function (){
+					mask.style.display = "none";
+					newModal.style.display = "none";
+				})
+			}*/
+</script>
+</html>

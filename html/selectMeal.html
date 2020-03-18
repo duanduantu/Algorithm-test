@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>选择套餐</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="/static/script/jquery.min.js"></script>
+    <link rel="stylesheet" href="/static/skin/public.css">
+    <script src="/static/script/public.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@beta/lib/index.css">
+    <!-- 引入组件 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vant@beta/lib/vant.min.js"></script>
+    <script src="/static/script/6.0/router.js"></script>
+
+    <style>
+        html{
+            font-size:50px;
+        }
+        body {
+            background-color: #f2f2f2;
+            /*overflow: hidden;*/
+        }
+
+        .hospital-span {
+            font-size: 0.24rem;
+            color: #909090;
+            text-align: center;
+            display: block;
+            padding: 0.1rem 0 0.1rem 0;
+        }
+
+        .swipe-ad-img {
+            width: 100%;
+            display: block;
+            /*padding-bottom: 26.67%;*/
+        }
+
+        .custom-indicator {
+            width: 1.66rem;
+            height: 0.04rem;
+            border-radius: 0.02rem;
+            position: absolute;
+            display: flex;
+            bottom: 0.2rem;
+            left: calc(50% - 0.83rem);
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .custom-indicator-item {
+            background-color: #f7f7f7;
+            height: 0.04rem;
+            width: 0.16rem;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .custom-select-indicator {
+            width: 100%;
+            height: 100%;
+            background-color: #00c188;
+        }
+
+        .notice-div {
+            height: 0.8rem;
+            background-color: white;
+            font-size: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .notice-tips-span {
+            font-size: 0.18rem;
+            color: #fa3253;
+            border-radius: 0.02rem;
+            border: solid 0.02rem #fa3253;
+            padding: 0.04rem 0.06rem;
+            margin-left: 0.3rem;
+            margin-right: 0.11rem;
+            flex-shrink: 0;
+        }
+
+        .van-notice-bar {
+            width: 100%;
+            height: 100%;
+            padding-left: 0!important;
+        }
+
+        .meal-main-content-div {
+            position: relative;
+        }
+
+        .van-tabs__content {
+            padding-top: 0.02rem;
+        }
+        .van-tabs__wrap {
+            /*width: 4.93rem;*/
+            background-color: white;
+        }
+
+        .van-tabs__nav {
+            /*width: 4.93rem;*/
+        }
+
+        .van-tabs__nav--line {
+            width: 5.4rem;
+        }
+
+        .van-tabs__line {
+            /*width: 0.82rem!important;*/
+            /*transform: translateX(0.82rem) translateX(-50%)!important;*/
+            width: 1.18rem!important;
+        }
+
+        .tab-content-div {
+            background-color: #f2f2f2;
+            display: flex;
+            /*align-items: center;*/
+        }
+
+        .meal-left-div {
+            background-color: #f2f2f2;
+            width: 1.8rem;
+            flex-shrink: 0;
+            /*overflow: hidden;*/
+            height: 9rem;
+            /*position: fixed;*/
+            /*left: 0;*/
+            /*top: 0;*/
+            /*bottom: 0;*/
+            overflow-y: auto;
+        }
+
+        .hot-meal-div,.recommand-meal-div {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 0;
+            position: relative;
+        }
+
+        .select-se-img {
+            width: 0.06rem;
+            height: 0.32rem;
+            position: absolute;
+            left: 0;
+            top: calc(50% - 0.16rem);
+            /*top: 50%;*/
+            /*margin: auto 0;*/
+        }
+
+        .item-icon-img {
+            width: 0.32rem;
+            height: 0.32rem;
+            padding-right: 0.04rem;
+        }
+
+        .department-meal-div {
+            text-align: center;
+            font-size: 0;
+            padding: 0.4rem 0.15rem 0.4rem 0.15rem;
+            position: relative;
+        }
+
+        .depart-title-span {
+            font-size: 0.28rem;
+            color: #252525;
+            display: inline-block;
+            padding-top: 0.4rem;
+            padding-bottom: 0.4rem;
+            padding-left: 0.04rem;
+            text-align: left;
+        }
+
+        .depart-content-title-span {
+            font-size: 0.28rem;
+            color: #909090;
+            text-align: left;
+            display: inline-block;
+
+        }
+
+
+        .meal-right-div {
+            position: fixed;
+            overflow: auto;
+            left: 1.8rem;
+            bottom: 0;
+            top: 0;
+        }
+
+        .meal-list-cell-div {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: white;
+        }
+
+        .meal-icon-img {
+            width: 1.4rem;
+            height: 1.4rem;
+            border-radius: 0.3rem!important;
+            flex-shrink: 0;
+            padding: 0.2rem;
+            object-fit: cover;
+            overflow: hidden;
+        }
+
+        .meal-content-div {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            border-bottom: 0.02rem solid #f2f2f2;
+            padding-top: 0.35rem;
+            padding-bottom: 0.35rem;
+        }
+
+        .meal-title-span {
+            font-size: 0.28rem;
+            color: #252525;
+            padding-bottom: 0.15rem;
+            display: block;
+            padding-right: 0.29rem;
+        }
+
+        .meal-price-sales-div {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 0.1rem;
+            padding-right: 0.29rem;
+        }
+
+        .meal-price-span {
+            font-size: 0.32rem;
+            color: #fa3253;
+        }
+
+        .meal-sales-span {
+            font-size: 0.24rem;
+            color: #909090
+        }
+
+
+        .project-title-div {
+
+            /*padding: 0.29rem 0.39rem 0.3rem 0.4rem;*/
+            font-size: 0;
+            background-color: white;
+            overflow: auto;
+        }
+
+        .project-title-span {
+            font-size: 0.24rem;
+            color: #909090;
+            display: block;
+            padding: 0.29rem 0.39rem 0.3rem 0.4rem;
+            border-bottom: solid 0.02rem #f5f5f5;
+
+        }
+
+        .project-content-cell-div {
+            border-bottom: solid 0.02rem #f5f5f5;
+        }
+
+        .project-content-cell-img {
+            width: 0.06rem;
+            height: 0.32rem;
+            margin: 0.24rem 0.2rem 0 0.3rem;
+        }
+
+        .project-contet-cell-title-span {
+            font-size: 0.3rem;
+            color: #252525;
+            display: inline-block;
+            padding: 0.24rem 0.47rem 0.19rem 0;
+        }
+
+        .project-content-cell-content-span {
+            font-size: 0.24rem;
+            color: #909090;
+            display: block;
+            padding: 0 0.47rem 0.27rem 0.56rem;
+        }
+
+        .filter-div {
+            position: absolute;
+            top: calc(22px - 0.15rem);
+            right: 0.3rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .filter-span {
+            font-size: 0.28rem;
+            color: #909090;
+        }
+
+        .filter-img {
+            width: 0.34rem;
+            height: 0.3rem;
+        }
+
+        .nurse-container-div {
+            /*position: fixed;*/
+            /*left: 0;*/
+            /*right: 0;*/
+            /*top: 0;*/
+            overflow: auto;
+        }
+
+        .nurse-cell-div {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: white;
+            position: relative;
+        }
+
+        .head-icon-div {
+            width: 1.14rem;
+            height: 1.14rem;
+            flex-shrink: 0;
+            padding: 0.28rem 0.19rem 0.28rem 0.3rem;
+            border-radius: 0.57rem;
+            overflow: hidden;
+        }
+
+        .head-icon-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 0.57rem;
+            overflow: hidden;
+        }
+
+        .nurse-info-div {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .nurse-name-span {
+            font-size: 0.32rem;
+            color: #252525;
+            display: inline-block;
+            padding-bottom: 0.1rem;
+        }
+
+        .nurse-info-content-div {
+            display: flex;
+            /*justify-content: center;*/
+            align-items: center;
+            /*display: inline-block;*/
+            padding-top: 0.1rem;
+        }
+
+        .nurse-info-content-span {
+            font-size: 0.26rem;
+            font-weight: normal;
+            font-stretch: normal;
+            line-height: 0.4rem;
+            letter-spacing: 0rem;
+            color: #909090;
+        }
+
+        .nurse-info-se-span {
+            padding-left: 0.1rem;
+            padding-right: 0.1rem;
+        }
+
+        .praise-rate-span {
+            font-size: 0.26rem;
+            color: #f8821c;
+            flex-shrink: 0;
+            display: block;
+            padding-right: 0.3rem;
+        }
+
+        .nurse-cell-underline-div {
+            background-color: #f5f5f5;
+            height: 0.02rem;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            left: 1.63rem;
+        }
+
+        .nurse-filter-overlay-div {
+            background-color: white;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 2;
+            left: 0.3rem;
+            right: 0.3rem;
+            top: calc((100% - 6.73rem)/2);
+            height: 6.73rem;
+            border-radius: 0.16rem;
+        }
+
+        .overlay-workyear-div,.overlay-age-div,.overlay-sex-div {
+            padding: 0.49rem 0.2rem 0 0.3rem;
+            font-size: 0;
+        }
+
+        .overlay-title-span {
+            font-size: 0.32rem;
+            color: #3b4250;
+            margin-bottom: 0.29rem;
+            display: block;
+            line-height: 0.36rem;
+        }
+
+        .overlay-content-div {
+            display: flex;
+
+        }
+
+        .overlay-content-span {
+            font-size: 0.26rem;
+            color: #909090;
+            border-radius: 0.06rem;
+            border: solid 0.02rem #dddddd;
+            display: inline-block;
+            padding: 0.09rem;
+            margin: 0.05rem;
+            line-height: 0.23rem;
+        }
+
+        .overlay-footer-div {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 0.5rem;
+            margin-left: 0.3rem;
+            margin-right: 0.3rem;
+        }
+
+        .reset-div {
+            background-color: #f7f7f7;
+            border-radius: 0.1rem;
+            font-size: 0.32rem;
+            color: #00c188;
+            text-align: center;
+            padding-top: 0.24rem;
+            padding-bottom: 0.24rem;
+            flex-grow: 1;
+            margin-right: 0.15rem;
+        }
+
+        .sure-div {
+            background-color: #00c188;
+            border-radius: 0.1rem;
+            font-size: 0.32rem;
+            color: #fffffe;
+            text-align: center;
+            padding-top: 0.24rem;
+            padding-bottom: 0.24rem;
+            flex-grow: 1;
+            margin-left: 0.15rem;
+        }
+
+        .close-img {
+            width: 0.44rem;
+            height: 0.44rem;
+            position: absolute;
+            top: 0.3rem;
+            right: 0.3rem;
+        }
+
+
+    </style>
+</head>
+<body>
+<div id="select-meal-div" v-cloak>
+    <span class="hospital-span">{{ hospital }}</span>
+    <van-swipe :autoplay="3000" indicator-color="#00c188" @change="onChange">
+        <van-swipe-item>
+            <img src="/static/images/6.0/1.jpg" class="swipe-ad-img"/>
+        </van-swipe-item>
+        <van-swipe-item>
+            <img src="/static/images/6.0/2.jpg" class="swipe-ad-img"/>
+        </van-swipe-item>
+        <van-swipe-item>
+            <img src="/static/images/6.0/3.jpg" class="swipe-ad-img"/>
+        </van-swipe-item>
+        <van-swipe-item>
+            <img src="/static/images/6.0/4.jpg" class="swipe-ad-img"/>
+        </van-swipe-item>
+        <van-swipe-item>
+            <img src="/static/images/6.0/5.jpg" class="swipe-ad-img"/>
+        </van-swipe-item>
+        <van-swipe-item>
+            <img src="/static/images/6.0/6.jpg" class="swipe-ad-img"/>
+        </van-swipe-item>
+        <div class="custom-indicator" slot="indicator">
+            <div class="custom-indicator-item">
+                <div class="custom-select-indicator" v-if="selectIndex === 0"></div>
+            </div>
+            <div class="custom-indicator-item">
+                <div class="custom-select-indicator" v-if="selectIndex === 1"></div>
+            </div>
+            <div class="custom-indicator-item">
+                <div class="custom-select-indicator" v-if="selectIndex === 2"></div>
+            </div>
+            <div class="custom-indicator-item">
+                <div class="custom-select-indicator" v-if="selectIndex === 3"></div>
+            </div>
+            <div class="custom-indicator-item">
+                <div class="custom-select-indicator" v-if="selectIndex === 4"></div>
+            </div>
+            <div class="custom-indicator-item">
+                <div class="custom-select-indicator" v-if="selectIndex === 5"></div>
+            </div>
+
+        </div>
+    </van-swipe>
+    <div class="notice-div">
+        <span class="notice-tips-span">公告</span>
+        <van-notice-bar
+                color="#333333"
+                background="#ffffff"
+        >
+            {{ noticeContent }}
+        </van-notice-bar>
+    </div>
+    <div class="meal-main-content-div">
+        <van-tabs v-model="active" swipeable animated @change="pageChange" title-inactive-color="#101d37" title-active-color="#00c188" color="#00c188">
+            <van-tab title='优选套餐'>
+                <div class="tab-content-div">
+                    <div class="meal-left-div">
+                        <div class="hot-meal-div" @click="clickDepart(0)" :style="hotStyle">
+                            <img src="/static/images/6.0/xuanzetaocan_rexiao_icon.png" class="item-icon-img"/>
+                            <span class="depart-title-span">热销</span>
+                            <img src="/static/images/6.0/taocanxiangqing_pingjiazhuangshi_icon.png" class="select-se-img" v-if="currentSelectDepartIndex === 0"/>
+                        </div>
+                        <div class="recommand-meal-div recommand-div" @click="clickDepart(1)" :style="recommandStyle">
+                            <img src="/static/images/6.0/xuanzetaocan_tuijian_icon.png" class="item-icon-img"/>
+                            <span class="depart-title-span">推荐</span>
+                            <img src="/static/images/6.0/taocanxiangqing_pingjiazhuangshi_icon.png" class="select-se-img" v-if="currentSelectDepartIndex === 1"/>
+                        </div>
+                        <div class="department-meal-div" v-for="(item,index) in departmentList" :key="index" @click="clickDepart(index+2)" :style="item.departStyle">
+                            <span class="depart-content-title-span">{{ item.name }}</span>
+                            <img src="/static/images/6.0/taocanxiangqing_pingjiazhuangshi_icon.png" class="select-se-img" v-if="currentSelectDepartIndex === (index+2)"/>
+                        </div>
+                    </div>
+                    <div class="meal-right-div" v-show="currentSelectDepartIndex === 0">
+                        <van-pull-refresh v-model="hotMealDepart.isLoading" @refresh="onRefresh(0)">
+                            <van-list
+                                    v-model="hotMealDepart.loading"
+                                    :finished="hotMealDepart.finished"
+                                    finished-text="没有更多了"
+                                    @load="onLoad(0)"
+                                    :offset="hotMealDepart.offset"
+                                    id="list"
+                            >
+                                <div class="meal-list-cell-div" v-for="(item,index) in hotMealDepart.mealList" :key="index" @click="clickMealCell(index)">
+                                    <img :src="item.icon" class="meal-icon-img"/>
+                                    <div class="meal-content-div">
+                                        <span class="meal-title-span">{{ item.name }}</span>
+                                        <div class="meal-price-sales-div">
+                                            <span class="meal-price-span">{{ item.price }}</span>
+                                            <span class="meal-sales-span">{{ item.sales }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </van-list>
+                        </van-pull-refresh>
+                    </div>
+                    <div class="meal-right-div" v-show="currentSelectDepartIndex === 1">
+                        <van-pull-refresh v-model="recommendMealDepart.isLoading" @refresh="onRefresh(1)">
+                            <van-list
+                                    v-model="recommendMealDepart.loading"
+                                    :finished="recommendMealDepart.finished"
+                                    finished-text="没有更多了"
+                                    @load="onLoad(1)"
+                                    :offset="recommendMealDepart.offset"
+                                    id="list"
+                            >
+                                <div class="meal-list-cell-div" v-for="(item,index) in recommendMealDepart.mealList" :key="index" @click="clickMealCell(index)">
+                                    <img :src="item.icon" class="meal-icon-img"/>
+                                    <div class="meal-content-div">
+                                        <span class="meal-title-span">{{ item.name }}</span>
+                                        <div class="meal-price-sales-div">
+                                            <span class="meal-price-span">{{ item.price }}</span>
+                                            <span class="meal-sales-span">{{ item.sales }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </van-list>
+                        </van-pull-refresh>
+                    </div> 
+                    <div class="meal-right-div" v-for="(item,index) in departmentList" :key="index" v-show="currentSelectDepartIndex - 2 === index">
+                        <van-pull-refresh v-model="item.isLoading" @refresh="onRefresh(index+2)">
+                            <van-list
+                                    v-model="item.loading"
+                                    :finished="item.finished"
+                                    finished-text="没有更多了"
+                                    @load="onLoad(index+2)"
+                                    :offset="item.offset"
+                                    id="list"
+                            >
+                                <div class="meal-list-cell-div" v-for="(item,index) in item.mealList" :key="index" @click="clickMealCell(index)">
+                                    <img :src="item.icon" class="meal-icon-img"/>
+                                    <div class="meal-content-div">
+                                        <span class="meal-title-span">{{ item.name }}</span>
+                                        <div class="meal-price-sales-div">
+                                            <span class="meal-price-span">{{ item.price }}</span>
+                                            <span class="meal-sales-span">{{ item.sales }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </van-list>
+                        </van-pull-refresh>
+                    </div>
+                </div>
+            </van-tab>
+            <van-tab title='照护项目'>
+                <div class="tab-content-div">
+                    <div class="project-title-div">
+                        <span class="project-title-span">不同的病情、病种、科室的患者，需要的照护项目也会不同，照护项目以您选定的套餐设置为准！</span>
+                        <div class="project-content-cell-div" v-for="(item,index) in projectList">
+                            <img src="/static/images/6.0/taocanxiangqing_pingjiazhuangshi_icon.png" class="project-content-cell-img"/>
+                            <span class="project-contet-cell-title-span">{{ item.title }}</span>
+                            <span class="project-content-cell-content-span">{{ item.content }}</span>
+                        </div>
+                    </div>
+                </div>
+            </van-tab>
+            <van-tab title='在院护工'>
+                <div class="nurse-container-div">
+                    <van-pull-refresh v-model="isNurseLoading" @refresh="onNurseRefresh">
+                        <van-list
+                                v-model="nurseLoading"
+                                :finished="isNursefinished"
+                                finished-text="没有更多了"
+                                @load="onNurseLoad"
+                                :offset="nurseOffset"
+                                id="list1"
+                        >
+                            <div class="nurse-cell-div" v-for="(item,index) in nurseList" :key="index" @click="clickNurse(index)">
+                                <div class="head-icon-div">
+                                    <div><van-image :src="item.headIcon" class="head-icon-img" round fit="cover" width="1.14rem" height="1.14rem"/></div>
+                                </div>
+                                <div class="nurse-info-div">
+                                    <span class="nurse-name-span">{{ item.name }}</span>
+                                    <div class="nurse-info-content-div">
+                                        <span class="nurse-info-content-span">{{ item.sex }}</span>
+                                        <span class="nurse-info-content-span nurse-info-se-span">|</span>
+                                        <span class="nurse-info-content-span">{{ item.age }}</span>
+                                        <span class="nurse-info-content-span nurse-info-se-span">|</span>
+                                        <span class="nurse-info-content-span">{{ item.city }}</span>
+                                        <span class="nurse-info-content-span nurse-info-se-span">|</span>
+                                        <span class="nurse-info-content-span">{{ item.workYear }}</span>
+                                    </div>
+                                </div>
+                                <span class="praise-rate-span">
+                                    好评率{{ item.rate }}
+                                 </span>
+                                <div class="nurse-cell-underline-div"></div>
+                            </div>
+                        </van-list>
+                    </van-pull-refresh>
+
+                </div>
+            </van-tab>
+        </van-tabs>
+        <div class="filter-div" v-if="currentPageIndex === 2" @click="clickFilter">
+            <span class="filter-span">筛选</span>
+            <img src="/static/images/6.0/xuanzetaocan_shaixuan_icon.png" class="filter-img"/>
+        </div>
+
+    </div>
+
+    <div class="nurse-filter-overlay-div" v-if="overlayShow">
+        <div class="overlay-workyear-div">
+            <span class="overlay-title-span">护龄</span>
+            <div class="overlay-content-div">
+                <span class="overlay-content-span" @click="clickWorkYear(index)" :style="item.workYearStyle" v-for="(item,index) in workYearFilter" :key="index">{{ item.name }}</span>
+            </div>
+        </div>
+        <div class="overlay-age-div">
+            <span class="overlay-title-span">年龄</span>
+            <div class="overlay-content-div">
+                <span class="overlay-content-span" @click="clickAge(index)" :style="item.workYearStyle" v-for="(item,index) in ageFilter" :key="index">{{ item.name }}</span>
+            </div>
+        </div>
+        <div class="overlay-sex-div">
+            <span class="overlay-title-span">性别</span>
+            <span class="overlay-content-span" @click="clickSex(index)" :style="item.workYearStyle" v-for="(item,index) in sexFilter" :key="index">{{ item.name }}</span>
+        </div>
+        <div class="overlay-footer-div">
+            <div class="reset-div" @click="clickReset">重置</div>
+            <div class="sure-div" @click="clickSure">确定</div>
+        </div>
+        <img src="/static/images/6.0/guanbi_tanchuang_icon.png" class="close-img" @click="overlayShow = false"/>
+    </div>
+    <van-overlay
+        :show="overlayShow"
+    >
+    </van-overlay>
+</div>
+</body>
+</html>
+<script>
+    var Vue = window.Vue;
+    var vant = window.vant;
+    // 注册组件
+    Vue.use(vant);
+    var app = new Vue({
+        el: '#select-meal-div',
+        data: {
+            hospital: '成都中医药大学附属医院',
+            selectIndex: 0,//轮播图的当前索引
+            noticeContent: '', //公告内容
+            active: 0,//tabbar激活的索引
+            currentPageIndex: 0,//当前选中的tabbar索引
+            departmentList: [],//科室列表，不包含 热销和推荐
+            currentSelectDepartIndex: 0,//当前选中的科室索引，默认选择热销
+            hotStyle:{ //热销div的样式
+                backgroundColor: '#ffffff'
+            },
+            recommandStyle:{ //推荐div的样式
+                backgroundColor: '#f2f2f2'
+            },
+            hotMealDepart: {
+                mealList: [],//热销分类的套餐列表
+                currentPage: 1,//套餐列表的当前页数
+                totalPage: 1,//套餐列表的总共页数
+                isLoading: false,//套餐列表是否处于上来加载更多的状态
+                finished: false,//套餐列表是否已经全部加载
+                offset: 0,
+                loading: false,//套餐列表是否处于下拉刷新的状态
+            },
+            recommendMealDepart: {
+                mealList: [],//推荐分类的套餐列表
+                currentPage: 1,//套餐列表的当前页数
+                totalPage: 1,//套餐列表的总共页数
+                isLoading: false,//套餐列表是否处于上来加载更多的状态
+                finished: false,//套餐列表是否已经全部加载
+                offset: 0,
+                loading: false,//套餐列表是否处于下拉刷新的状态
+            },
+            // mealList: [],//套餐列表
+            projectList: [ //全部的照护项目列表
+                {
+                    title: '起居护理(10)',
+                    content: '洁面、梳头、剃须、修建指/趾甲、足部清洁、穿衣/更衣、床上洗头、卧式擦浴、助浴。'
+                },
+                {
+                    title: '卧位护理(3)',
+                    content: '翻身拍背、协助床上移动、局部按摩'
+                },
+                {
+                    title: '排泄护理(4)',
+                    content: '失禁护理、床上使用便器、协助大小便、开塞露便通'
+                },
+                {
+                    title: '饮食护理(4)',
+                    content: '订餐、协助进食、协助服药、饭后清洁'
+                },
+                {
+                    title: '行动护理(4）',
+                    content: '户外散步、轮椅辅助、步行辅助、功能训练'
+                },
+                {
+                    title: '协助护理(10）',
+                    content: '六区各项标本、协助检查、协助雾化吸入、物理降温、协助吸氧、异常时通知医生、精神观察及心理疏导、各种管道的监护、心电监护观察、输液监护观察'
+                }
+            ],
+            nurseList: [],//护工列表
+            nurseCurrentPage: 1,//护工列表的当前页数
+            nurseTotalPage: 1,//护工列表的总页数
+            isNurseLoading: false,//护工列表是否处于上拉加载更多的状态
+            isNursefinished: false,//护工列表是否全部加载
+            nurseOffset: 0,
+            nurseLoading: false,//护工列表是否处于下拉加载更多的状态
+            overlayShow: false,//是否显示黑色半透明蒙版
+            selectWorkYearIndex: 0,//护工筛选选择的工作年限索引
+            workYearFilter: [
+                {
+                    code: -1,
+                    name: '不限',
+                    workYearStyle: {
+                        border:'solid 0.02rem #00c188',
+                        color: '#00c188',
+                        marginLeft: 0
+                    }
+                },
+                {
+                    code: 0,
+                    name: '一年以下',
+                    workYearStyle: {
+                        border:'solid 0.02rem #dddddd',
+                        color: '#909090'
+                    }
+                },
+                {
+                    code: 1,
+                    name: '2 ~ 5年',
+                    workYearStyle: {
+                        border:'solid 0.02rem #dddddd',
+                        color: '#909090'
+                    }
+                },
+                {
+                    code: 2,
+                    name: '10年以上',
+                    workYearStyle: {
+                        border:'solid 0.02rem #dddddd',
+                        color: '#909090'
+                    },
+                    marginRight: 0
+                }
+            ],//护工筛选的数组
+            selectAgeIndex: 0,//护工筛选选择的年龄索引
+            ageFilter: [
+                {
+                    code: -1,
+                    name: '不限',
+                    workYearStyle: {
+                        border:'solid 0.02rem #00c188',
+                        color: '#00c188',
+                        marginLeft: '0'
+                    }
+                },
+                {
+                    code: 0,
+                    name: '30岁以下',
+                    workYearStyle: {
+                        border:'solid 0.02rem #dddddd',
+                        color: '#909090'
+                    }
+                },
+                {
+                    code: 1,
+                    name: '30-40岁',
+                    workYearStyle: {
+                        border:'solid 0.02rem #dddddd',
+                        color: '#909090'
+                    }
+                },
+                {
+                    code: 2,
+                    name: '40-50岁',
+                    workYearStyle: {
+                        border:'solid 0.02rem #dddddd',
+                        color: '#909090'
+                    }
+                },
+                {
+                    code: 3,
+                    name: '50岁以上',
+                    workYearStyle: {
+                        border:'solid 0.02rem #dddddd',
+                        color: '#909090',
+                        marginRight: 0
+                    }
+                }
+            ],//护工筛选年龄数组
+            selectSexIndex: 0,//护工筛选选择的性别索引
+            sexFilter: [
+                {
+                    code: -1,
+                    name: '不限',
+                    workYearStyle: {
+                        border:'solid 0.02rem #00c188',
+                        color: '#00c188',
+                        marginLeft: '0'
+                    }
+                },{
+                    code: 0,
+                    name: '男',
+                    workYearStyle: {
+                        border:'solid 0.02rem #dddddd',
+                        color: '#909090'
+                    }
+                },{
+                    code: 1,
+                    name: '女',
+                    workYearStyle: {
+                        border:'solid 0.02rem #dddddd',
+                        color: '#909090',
+                        marginRight: '0'
+                    }
+                }
+            ]//护工筛选性别数组
+        },
+        methods: {
+            onChange(index) {
+                this.selectIndex = index;
+            },
+            pageChange:function (index) {
+                this.currentPageIndex = index;
+                if (index === 2) {
+                    this.$nextTick(function () {
+                        var toTop = $(".nurse-container-div").offset().top;
+                        var windowHeight = $(window).height();
+                        $(".nurse-container-div").css('height',windowHeight - toTop);
+                    });
+                } else if (index === 1) {
+                    this.$nextTick(function () {
+                        var toTop = $(".project-title-div").offset().top;
+                        var windowHeight = $(window).height();
+                        $(".project-title-div").css('height',windowHeight - toTop);
+                    });
+                }
+            },
+            clickDepart: function (index) {
+                this.currentSelectDepartIndex = index;
+            },
+
+            clickMealCell: function (index) {
+                // window.location.href = '../MealManager/mealDetail.html'
+                router.gotoMealDetail();
+            },
+            onRefresh(index) {
+                setTimeout(function () {
+                    if (index === 0) {
+                        app.hotMealDepart.isLoading = false;
+                        app.hotMealDepart.currentPage = 1;
+                    } else if (index === 1) {
+                        app.recommendMealDepart.isLoading = false;
+                        app.recommendMealDepart.currentPage = 1;
+                    } else {
+                        app.departmentList[index - 2].isLoading = false;
+                        app.departmentList[index - 2].currentPage = 1;
+                    }
+                },500);
+            },
+            onLoad (index) {
+                setTimeout(function () {
+                    console.log('加载更多 ' + index);
+                    if (index === 0) {
+                        // testData();
+                        // 加载状态结束
+                        app.hotMealDepart.loading = false;
+                        // 数据全部加载完成
+                        if (app.hotMealDepart.currentPage >= app.hotMealDepart.totalPage) {
+                            app.hotMealDepart.finished = true
+                        }else {
+                            app.hotMealDepart.currentPage++;
+                        }
+                    } else if (index === 1) {
+                        // testData();
+                        // 加载状态结束
+                        app.recommendMealDepart.loading = false;
+                        // 数据全部加载完成
+                        if (app.recommendMealDepart.currentPage >= app.recommendMealDepart.totalPage) {
+                            app.recommendMealDepart.finished = true
+                        }else {
+                            app.recommendMealDepart.currentPage++;
+                        }
+                    } else {
+                        // testData();
+                        // 加载状态结束
+                        app.departmentList[index - 2].loading = false;
+                        // 数据全部加载完成
+                        if (app.departmentList[index - 2].currentPage >= app.departmentList[index - 2].totalPage) {
+                            app.departmentList[index - 2].finished = true
+                        }else {
+                            app.departmentList[index - 2].currentPage++;
+                        }
+                    }
+
+                },500);
+            },
+            clickFilter: function () {
+                this.overlayShow = true;
+            },
+            onNurseRefresh: function () {
+                setTimeout(function () {
+                    app.isNurseLoading = false;
+                    app.nurseCurrentPage = 1;
+                },500);
+            },
+            onNurseLoad: function () {
+                setTimeout(function () {
+                    testData();
+                    // 加载状态结束
+                    app.nurseLoading = false;
+                    // 数据全部加载完成
+                    if (app.nurseCurrentPage >= app.nurseTotalPage) {
+                        app.isNursefinished = true
+                    }else {
+                        app.nurseCurrentPage++;
+                    }
+                    console.log('加载更多')
+                },500);
+            },
+            clickWorkYear: function (index) {
+                this.selectWorkYearIndex = index;
+                for (var i = 0; i < this.workYearFilter.length;i++) {
+                    if (i === index) {
+                        this.workYearFilter[i].workYearStyle.border = 'solid 0.02rem #00c188';
+                        this.workYearFilter[i].workYearStyle.color = '#00c188';
+                    }else {
+                        this.workYearFilter[i].workYearStyle.border = 'solid 0.02rem #dddddd';
+                        this.workYearFilter[i].workYearStyle.color = '#909090';
+                    }
+                }
+            },
+            clickAge: function (index) {
+                this.selectAgeIndex = index;
+                for (var i = 0; i < this.ageFilter.length;i++) {
+                    if (i === index) {
+                        this.ageFilter[i].workYearStyle.border = 'solid 0.02rem #00c188';
+                        this.ageFilter[i].workYearStyle.color = '#00c188';
+                    }else {
+                        this.ageFilter[i].workYearStyle.border = 'solid 0.02rem #dddddd';
+                        this.ageFilter[i].workYearStyle.color = '#909090';
+                    }
+                }
+            },
+            clickSex: function (index) {
+                this.selectSexIndex = index;
+                for (var i = 0; i < this.sexFilter.length;i++) {
+                    if (i === index) {
+                        this.sexFilter[i].workYearStyle.border = 'solid 0.02rem #00c188';
+                        this.sexFilter[i].workYearStyle.color = '#00c188';
+                    }else {
+                        this.sexFilter[i].workYearStyle.border = 'solid 0.02rem #dddddd';
+                        this.sexFilter[i].workYearStyle.color = '#909090';
+                    }
+                }
+            },
+            clickReset: function () {
+                this.clickWorkYear(0);
+                this.clickAge(0);
+                this.clickSex(0);
+            },
+            clickSure: function () {
+                this.overlayShow = false;
+                console.log('护龄：' + this.workYearFilter[this.selectWorkYearIndex].name + ',年龄：' + this.ageFilter[this.selectAgeIndex].name + ',性别：' + this.sexFilter[this.selectSexIndex].name)
+            },
+            clickNurse: function (index) {
+                router.gotoNurseInfo();
+            }
+
+        },
+        watch: {
+            currentSelectDepartIndex: function () {
+                if (this.currentSelectDepartIndex > 1) {
+                    this.hotStyle.backgroundColor = '#f2f2f2';
+                    this.recommandStyle.backgroundColor = '#f2f2f2';
+                    for (var i = 0;i < this.departmentList.length;i++) {
+                        if (i === this.currentSelectDepartIndex - 2) {
+                            this.departmentList[i].departStyle.color = '#252525';
+                            this.departmentList[i].departStyle.backgroundColor = '#ffffff'
+                        } else {
+                            this.departmentList[i].departStyle.color = '#909090';
+                            this.departmentList[i].departStyle.backgroundColor = '#f2f2f2'
+                        }
+                    }
+                }else {
+                    for (var i = 0;i < this.departmentList.length;i++) {
+                        this.departmentList[i].departStyle.color = '#909090';
+                        this.departmentList[i].departStyle.backgroundColor = '#f2f2f2'
+                    }
+                    this.hotStyle.backgroundColor = '#f2f2f2';
+                    this.recommandStyle.backgroundColor = '#f2f2f2';
+                    if (this.currentSelectDepartIndex === 0) {
+                        this.hotStyle.backgroundColor = '#ffffff';
+                    }else {
+                        this.recommandStyle.backgroundColor = '#ffffff';
+                    }
+                }
+            }
+        },
+        mounted() {
+            this.$nextTick(function () {
+                var toTop = $(".meal-left-div").offset().top;
+                var windowHeight = $(window).height();
+                $(".meal-left-div").css('height',windowHeight - toTop);
+            });
+
+        }
+    });
+
+
+    testData();
+    function testData() {
+        app.noticeContent = '客户章**预约在成都中医药大学附属医院07月04日日客户章**预约在成都中医药大学附属医院07月04日日客户章**预约在成都中医药大学附属医院07月04日日客户章**预约在成都中医药大学附属医院07月04日日客户章**预约在成都中医药大学附属医院07月04日日客户章**预约在成都中医药大学附属医院07月04日日客户章**预约在成都中医药大学附属医院07月04日日客户章**预约在成都中医药大学附属医院07月04日日客户章**预约在成都中医药大学附属医院07月04日日';
+        app.departmentList = [
+            {
+                cid: '001',
+                name: '呼吸科内科常科常呼吸科内科常科常呼吸科内科常科常呼吸科内科常科常',
+                isSelect: false,
+                departStyle: {
+                    color: '#909090',
+                    backgroundColor: '#f2f2f2'
+                },
+                mealList: [
+                    {
+                        mealId: '001',
+                        icon: 'http://yihubang-image.oss-cn-shenzhen.aliyuncs.com/2019-07-12/ec892a6b1a2e4521abc12f49ae30c3a2_quantian_1.png',
+                        name:'短期卧床康复患者短期卧床康(科室1)',
+                        price:'100',
+                        sales:'100'
+                    },
+                    {
+                        mealId: '001',
+                        icon: 'http://yihubang-image.oss-cn-shenzhen.aliyuncs.com/2019-07-12/ec892a6b1a2e4521abc12f49ae30c3a2_quantian_1.png',
+                        name:'短期卧床康复患者短期卧床康(科室1)',
+                        price:'100',
+                        sales:'100'
+                    },
+                    {
+                        mealId: '001',
+                        icon: 'http://yihubang-image.oss-cn-shenzhen.aliyuncs.com/2019-07-12/ec892a6b1a2e4521abc12f49ae30c3a2_quantian_1.png',
+                        name:'短期卧床康复患者短期卧床康(科室1)',
+                        price:'100',
+                        sales:'100'
+                    }
+                ],
+                currentPage: 1,//套餐列表的当前页数
+                totalPage: 1,//套餐列表的总共页数
+                isLoading: false,//套餐列表是否处于上来加载更多的状态
+                finished: false,//套餐列表是否已经全部加载
+                offset: 0,
+                loading: false,//套餐列表是否处于下拉刷新的状态
+            },
+            {
+                cid: '002',
+                name: '骨伤科',
+                isSelect: false,
+                departStyle: {
+                    color: '#909090',
+                    backgroundColor: '#f2f2f2'
+                },
+                mealList: [
+                    {
+                        mealId: '001',
+                        icon: 'http://yihubang-image.oss-cn-shenzhen.aliyuncs.com/2019-07-12/ec892a6b1a2e4521abc12f49ae30c3a2_quantian_1.png',
+                        name:'短期卧床康复患者短期卧床康(科室2)',
+                        price:'100',
+                        sales:'100'
+                    },
+                    {
+                        mealId: '001',
+                        icon: 'http://yihubang-image.oss-cn-shenzhen.aliyuncs.com/2019-07-12/ec892a6b1a2e4521abc12f49ae30c3a2_quantian_1.png',
+                        name:'短期卧床康复患者短期卧床康(科室2)',
+                        price:'100',
+                        sales:'100'
+                    }
+                ],
+                currentPage: 1,//套餐列表的当前页数
+                totalPage: 1,//套餐列表的总共页数
+                isLoading: false,//套餐列表是否处于上来加载更多的状态
+                finished: false,//套餐列表是否已经全部加载
+                offset: 0,
+                loading: false,//套餐列表是否处于下拉刷新的状态
+            }
+        ];
+        app.hotMealDepart.mealList = [
+            {
+                mealId: '001',
+                icon: 'http://yihubang-image.oss-cn-shenzhen.aliyuncs.com/2019-07-12/ec892a6b1a2e4521abc12f49ae30c3a2_quantian_1.png',
+                name:'短期卧床康复患者短期卧床康(热销)',
+                price:'100',
+                sales:'100'
+            }
+        ];
+        app.hotMealDepart.totalPage = 1;
+        app.recommendMealDepart.mealList = [
+            {
+                mealId: '001',
+                icon: 'http://yihubang-image.oss-cn-shenzhen.aliyuncs.com/2019-07-12/ec892a6b1a2e4521abc12f49ae30c3a2_quantian_1.png',
+                name:'短期卧床康复患者短期卧床康(推荐)',
+                price:'100',
+                sales:'100'
+            },
+            {
+                mealId: '001',
+                icon: 'http://yihubang-image.oss-cn-shenzhen.aliyuncs.com/2019-07-12/ec892a6b1a2e4521abc12f49ae30c3a2_quantian_1.png',
+                name:'短期卧床康复患者短期卧床康(推荐)',
+                price:'100',
+                sales:'100'
+            },
+            {
+                mealId: '001',
+                icon: 'http://yihubang-image.oss-cn-shenzhen.aliyuncs.com/2019-07-12/ec892a6b1a2e4521abc12f49ae30c3a2_quantian_1.png',
+                name:'短期卧床康复患者短期卧床康(推荐)',
+                price:'100',
+                sales:'100'
+            },
+            {
+                mealId: '001',
+                icon: 'http://yihubang-image.oss-cn-shenzhen.aliyuncs.com/2019-07-12/ec892a6b1a2e4521abc12f49ae30c3a2_quantian_1.png',
+                name:'短期卧床康复患者短期卧床康(推荐)',
+                price:'100',
+                sales:'100'
+            },
+            {
+                mealId: '001',
+                icon: 'http://yihubang-image.oss-cn-shenzhen.aliyuncs.com/2019-07-12/ec892a6b1a2e4521abc12f49ae30c3a2_quantian_1.png',
+                name:'短期卧床康复患者短期卧床康(推荐)',
+                price:'100',
+                sales:'100'
+            },
+            {
+                mealId: '001',
+                icon: 'http://yihubang-image.oss-cn-shenzhen.aliyuncs.com/2019-07-12/ec892a6b1a2e4521abc12f49ae30c3a2_quantian_1.png',
+                name:'短期卧床康复患者短期卧床康(推荐)',
+                price:'100',
+                sales:'100'
+            },
+            {
+                mealId: '001',
+                icon: 'http://yihubang-image.oss-cn-shenzhen.aliyuncs.com/2019-07-12/ec892a6b1a2e4521abc12f49ae30c3a2_quantian_1.png',
+                name:'短期卧床康复患者短期卧床康(推荐)',
+                price:'100',
+                sales:'100'
+            },
+            {
+                mealId: '001',
+                icon: 'http://yihubang-image.oss-cn-shenzhen.aliyuncs.com/2019-07-12/ec892a6b1a2e4521abc12f49ae30c3a2_quantian_1.png',
+                name:'短期卧床康复患者短期卧床康(推荐)',
+                price:'100',
+                sales:'100'
+            },
+            {
+                mealId: '001',
+                icon: 'http://yihubang-image.oss-cn-shenzhen.aliyuncs.com/2019-07-12/ec892a6b1a2e4521abc12f49ae30c3a2_quantian_1.png',
+                name:'短期卧床康复患者短期卧床康(推荐)',
+                price:'100',
+                sales:'100'
+            }
+        ];
+        app.recommendMealDepart.totalPage = 3;
+        app.nurseList = [
+            {
+                headIcon: 'http://yihubang-image.oss-cn-shenzhen.aliyuncs.com/2019-07-12/ec892a6b1a2e4521abc12f49ae30c3a2_quantian_1.png',
+                name:'张三',
+                sex: '男',
+                age: '41岁',
+                city: '成都人',
+                workYear: '护龄8年',
+                rate: '90%'
+            },{
+                headIcon: 'http://yihubang-image.oss-cn-shenzhen.aliyuncs.com/2019-07-12/ec892a6b1a2e4521abc12f49ae30c3a2_quantian_1.png',
+                name:'李四',
+                sex: '男',
+                age: '41岁',
+                city: '成都人',
+                workYear: '护龄8年',
+                rate: '90%'
+            },{
+                headIcon: 'http://yihubang-image.oss-cn-shenzhen.aliyuncs.com/2019-07-12/ec892a6b1a2e4521abc12f49ae30c3a2_quantian_1.png',
+                name:'王麻子',
+                sex: '男',
+                age: '41岁',
+                city: '成都人',
+                workYear: '护龄8年',
+                rate: '90%'
+            },{
+                headIcon: 'http://yihubang-image.oss-cn-shenzhen.aliyuncs.com/2019-07-12/ec892a6b1a2e4521abc12f49ae30c3a2_quantian_1.png',
+                name:'王麻子',
+                sex: '男',
+                age: '41岁',
+                city: '成都人',
+                workYear: '护龄8年',
+                rate: '90%'
+            },{
+                headIcon: 'http://yihubang-image.oss-cn-shenzhen.aliyuncs.com/2019-07-12/ec892a6b1a2e4521abc12f49ae30c3a2_quantian_1.png',
+                name:'王麻子',
+                sex: '男',
+                age: '41岁',
+                city: '成都人',
+                workYear: '护龄8年',
+                rate: '90%'
+            },{
+                headIcon: 'http://yihubang-image.oss-cn-shenzhen.aliyuncs.com/2019-07-12/ec892a6b1a2e4521abc12f49ae30c3a2_quantian_1.png',
+                name:'王麻子',
+                sex: '男',
+                age: '41岁',
+                city: '成都人',
+                workYear: '护龄8年',
+                rate: '90%'
+            },{
+                headIcon: 'http://yihubang-image.oss-cn-shenzhen.aliyuncs.com/2019-07-12/ec892a6b1a2e4521abc12f49ae30c3a2_quantian_1.png',
+                name:'王麻子',
+                sex: '男',
+                age: '41岁',
+                city: '成都人',
+                workYear: '护龄8年',
+                rate: '90%'
+            },{
+                headIcon: 'http://yihubang-image.oss-cn-shenzhen.aliyuncs.com/2019-07-12/ec892a6b1a2e4521abc12f49ae30c3a2_quantian_1.png',
+                name:'王麻子',
+                sex: '男',
+                age: '41岁',
+                city: '成都人',
+                workYear: '护龄8年',
+                rate: '90%'
+            },{
+                headIcon: 'http://yihubang-image.oss-cn-shenzhen.aliyuncs.com/2019-07-12/ec892a6b1a2e4521abc12f49ae30c3a2_quantian_1.png',
+                name:'王麻子',
+                sex: '男',
+                age: '41岁',
+                city: '成都人',
+                workYear: '护龄8年',
+                rate: '90%'
+            }
+        ]
+    }
+</script>
+
+
+
